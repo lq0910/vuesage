@@ -14,11 +14,13 @@ Vue 组件智能分析与优化引擎 - 你的 Vue 代码质量守护者
 
 ```bash
 # 克隆仓库
-git clone https://github.com/lq0910/vuesage.git
-
+git clone https://gitee.com/kdgzs/vuesage.git
 # 安装依赖
 cd vuesage
 npm install
+
+# or npm包安装
+npm i vuesage
 
 # 启动服务
 npm start
