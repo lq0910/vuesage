@@ -30,95 +30,47 @@ Vue 组件智能分析与优化引擎 - 基于 MCP (Model-Code-Prompt) 的 Vue �
 
 ## 安装使用 📦
 
-### 作为 MCP 服务使用（推荐）
+### 全局安装（推荐）
 
-1. 在项目中安装：
+```bash
+npm install -g vuesage
+```
+
+### 项目中安装
+
 ```bash
 npm install vuesage
 ```
 
-2. 配置 MCP 服务：
-在项目根目录创建 `mcp.json`：
+### 1. 作为 MCP 服务使用
+
+#### 配置 MCP
+
+在全局 MCP 配置文件中添加：
 ```json
 {
-  "name": "vuesage",
-  "type": "service",
-  "transport": "stdio",
-  "capabilities": {
-    "analyze": {
-      "description": "分析Vue组件代码质量"
-    },
-    "fix": {
-      "description": "修复代码问题"
+  "services": {
+    "vuesage": {
+      "name": "vuesage",
+      "type": "service",
+      "transport": "stdio",
+      "command": "vuesage",
+      "runtime": "node",
+      "global": true,
+      "capabilities": {
+        "analyze": {
+          "description": "分析Vue组件代码质量"
+        },
+        "fix": {
+          "description": "修复代码问题"
+        }
+      }
     }
   }
 }
 ```
 
-3. Cursor 编辑器会自动识别并启用该服务
-
-### 作为独立服务使用
-
-1. 克隆仓库：
-```bash
-git clone https://gitee.com/kdgzs/vuesage.git
-cd vuesage
-```
-
-2. 安装依赖：
-```bash
-npm install
-```
-
-3. 启动服务：
-```bash
-node src/index.js
-```
-
-服务将在 http://localhost:6188 启动
-
-## API 使用说明 📚
-
-### REST API
-
-#### 1. 分析组件
-- 端点：`POST /analyze`
-- 请求体：
-```json
-{
-  "component": "Vue组件代码"
-}
-```
-- 响应：
-```json
-{
-  "summary": {
-    "totalIssues": 5,
-    "categories": ["naming", "props", "performance"],
-    "hasAutoFixableIssues": true
-  },
-  "issues": [
-    {
-      "category": "naming",
-      "message": "组件名称应使用 PascalCase",
-      "severity": "warning",
-      "autofix": true
-    }
-  ]
-}
-```
-
-#### 2. 修复问题
-- 端点：`POST /fix`
-- 请求体：
-```json
-{
-  "component": "组件代码",
-  "issues": ["issue_id_1", "issue_id_2"]
-}
-```
-
-### Node.js API
+### 2. 作为 Node.js 模块使用
 
 ```javascript
 import { VueSage } from 'vuesage';
@@ -131,6 +83,116 @@ const analysis = await vueSage.analyze(componentCode);
 
 // 修复问题
 const fixed = await vueSage.fix(componentCode, analysis.issues);
+```
+
+### 3. 作为独立服务使用
+
+```bash
+# 启动服务
+vuesage serve
+```
+
+服务将在 http://localhost:6188 启动
+
+## API 使用说明 📚
+
+### analyze(code: string): Promise<Analysis>
+
+分析 Vue 组件代码，返回分析结果。
+
+#### 参数
+- `code` (string): Vue 组件代码
+
+#### 返回值
+```typescript
+interface Analysis {
+  summary: {
+    totalIssues: number;
+    categories: string[];
+    hasAutoFixableIssues: boolean;
+  };
+  issues: Array<{
+    category: string;
+    issues: Array<{
+      id: string;
+      message: string;
+      severity: 'error' | 'warning';
+      autofix: boolean;
+      line?: number;
+      column?: number;
+    }>;
+  }>;
+}
+```
+
+### fix(code: string, issues: Issue[]): Promise<FixResult>
+
+根据分析结果修复组件代码。
+
+#### 参数
+- `code` (string): Vue 组件代码
+- `issues` (Issue[]): 需要修复的问题列表
+
+#### 返回值
+```typescript
+interface FixResult {
+  success: boolean;
+  fixedComponent: string;
+  appliedFixes: Array<{
+    id: string;
+    message: string;
+    type: string;
+  }>;
+}
+```
+
+## HTTP API
+
+### POST /analyze
+
+分析组件代码。
+
+#### 请求体
+```json
+{
+  "component": "Vue组件代码"
+}
+```
+
+#### 响应
+```json
+{
+  "summary": {
+    "totalIssues": 5,
+    "categories": ["naming", "props", "performance"],
+    "hasAutoFixableIssues": true
+  },
+  "issues": [
+    {
+      "category": "naming",
+      "issues": [
+        {
+          "id": "naming-001",
+          "message": "组件名称应使用 PascalCase",
+          "severity": "warning",
+          "autofix": true
+        }
+      ]
+    }
+  ]
+}
+```
+
+### POST /fix
+
+修复组件代码中的问题。
+
+#### 请求体
+```json
+{
+  "component": "组件代码",
+  "issues": ["issue_id_1", "issue_id_2"]
+}
 ```
 
 ## 配置说明 ⚙️
