@@ -1,0 +1,163 @@
+{
+  "name": "vuesage",
+  "version": "1.0.0",
+  "description": "Vue组件智能分析与优化引擎",
+  "type": "service",
+  "transport": "stdio",
+  "platforms": ["cursor", "vscode"],
+  "capabilities": {
+    "analyze": {
+      "description": "分析Vue组件代码质量",
+      "input": {
+        "type": "object",
+        "properties": {
+          "component": {
+            "type": "string",
+            "description": "Vue组件代码"
+          },
+          "platform": {
+            "type": "string",
+            "enum": ["cursor", "vscode"],
+            "description": "运行平台"
+          }
+        },
+        "required": ["component"]
+      },
+      "output": {
+        "type": "object",
+        "properties": {
+          "summary": {
+            "type": "object",
+            "properties": {
+              "totalIssues": {
+                "type": "number",
+                "description": "发现的问题总数"
+              },
+              "categories": {
+                "type": "number",
+                "description": "问题类别数量"
+              },
+              "hasAutoFixableIssues": {
+                "type": "boolean",
+                "description": "是否有可自动修复的问题"
+              }
+            }
+          },
+          "issues": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "properties": {
+                "category": {
+                  "type": "string",
+                  "description": "问题类别"
+                },
+                "issues": {
+                  "type": "array",
+                  "items": {
+                    "type": "object",
+                    "properties": {
+                      "type": {
+                        "type": "string",
+                        "description": "问题类型"
+                      },
+                      "severity": {
+                        "type": "string",
+                        "enum": ["error", "warning"],
+                        "description": "问题严重程度"
+                      },
+                      "message": {
+                        "type": "string",
+                        "description": "问题描述"
+                      },
+                      "autofix": {
+                        "type": "object",
+                        "description": "自动修复信息"
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "fix": {
+      "description": "自动修复Vue组件中的问题",
+      "input": {
+        "type": "object",
+        "properties": {
+          "component": {
+            "type": "string",
+            "description": "Vue组件代码"
+          },
+          "issues": {
+            "type": "array",
+            "description": "需要修复的问题列表"
+          }
+        },
+        "required": ["component", "issues"]
+      },
+      "output": {
+        "type": "object",
+        "properties": {
+          "fixedComponent": {
+            "type": "string",
+            "description": "修复后的组件代码"
+          },
+          "appliedFixes": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "properties": {
+                "type": {
+                  "type": "string",
+                  "description": "修复类型"
+                },
+                "message": {
+                  "type": "string",
+                  "description": "修复说明"
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  "config": {
+    "type": "object",
+    "properties": {
+      "rules": {
+        "type": "object",
+        "description": "分析规则配置"
+      },
+      "autofix": {
+        "type": "object",
+        "description": "自动修复配置"
+      },
+      "formatting": {
+        "type": "object",
+        "description": "代码格式化配置"
+      }
+    }
+  },
+  "activation": {
+    "events": [
+      "onLanguage:vue",
+      "onCommand:vuesage.analyze",
+      "onCommand:vuesage.fix"
+    ]
+  },
+  "commands": {
+    "vuesage.analyze": {
+      "title": "VueSage: 分析组件",
+      "description": "分析当前Vue组件的代码质量"
+    },
+    "vuesage.fix": {
+      "title": "VueSage: 修复问题",
+      "description": "自动修复检测到的问题"
+    }
+  }
+} 

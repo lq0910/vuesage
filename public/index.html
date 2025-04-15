@@ -1,0 +1,369 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>VueSage - Vue组件智能分析与优化引擎</title>
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/monaco-editor@0.33.0/min/vs/editor/editor.main.css" rel="stylesheet">
+    <style>
+        .gradient-text {
+            background: linear-gradient(45deg, #4F46E5, #7C3AED);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+        .hero-gradient {
+            background: radial-gradient(circle at top, rgba(79, 70, 229, 0.1) 0%, transparent 70%);
+        }
+        /* 添加毛玻璃导航栏样式 */
+        .nav-blur {
+            background: rgba(255, 255, 255, 0.8);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            border-bottom: 1px solid rgba(229, 231, 235, 0.5);
+        }
+    </style>
+</head>
+<body class="bg-gray-50">
+    <nav class="nav-blur fixed w-full z-50">
+        <div class="max-w-7xl mx-auto px-4">
+            <div class="flex justify-between h-16">
+                <div class="flex">
+                    <div class="flex-shrink-0 flex items-center">
+                        <h1 class="text-2xl font-bold gradient-text">🧙‍♂️ VueSage</h1>
+                    </div>
+                    <div class="hidden sm:ml-6 sm:flex sm:space-x-8">
+                        <a href="#features" class="border-transparent text-gray-900 inline-flex items-center px-1 pt-1 border-b-2 text-sm font-medium hover:border-indigo-500">
+                            功能特点
+                        </a>
+                        <a href="#demo" class="border-transparent text-gray-900 inline-flex items-center px-1 pt-1 border-b-2 text-sm font-medium hover:border-indigo-500">
+                            在线体验
+                        </a>
+                        <a href="docs/index.html" class="border-transparent text-gray-900 inline-flex items-center px-1 pt-1 border-b-2 text-sm font-medium hover:border-indigo-500">
+                            文档
+                        </a>
+                    </div>
+                </div>
+                <div class="flex items-center">
+                    <a href="https://github.com/lq0910/vuesage" target="_blank" class="inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md text-white bg-indigo-600 hover:bg-indigo-700">
+                        GitHub
+                    </a>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <section class="pt-20 pb-16 hero-gradient">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-16">
+            <div class="text-center">
+                <h1 class="text-4xl tracking-tight font-extrabold text-gray-900 sm:text-5xl md:text-6xl">
+                    <span class="block">Vue组件智能分析</span>
+                    <span class="block gradient-text mt-3">代码质量守护者</span>
+                </h1>
+                <p class="mt-3 max-w-md mx-auto text-base text-gray-500 sm:text-lg md:mt-5 md:text-xl md:max-w-3xl">
+                    基于AI的Vue组件分析工具，自动检测代码问题，提供智能修复方案，帮助你编写更好的Vue组件。
+                </p>
+                <div class="mt-5 max-w-md mx-auto sm:flex sm:justify-center md:mt-8">
+                    <div class="rounded-md shadow">
+                        <a href="#demo" class="w-full flex items-center justify-center px-8 py-3 border border-transparent text-base font-medium rounded-md text-white bg-indigo-600 hover:bg-indigo-700 md:py-4 md:text-lg md:px-10">
+                            立即体验
+                        </a>
+                    </div>
+                    <div class="mt-3 rounded-md shadow sm:mt-0 sm:ml-3">
+                        <a href="docs/index.html" class="w-full flex items-center justify-center px-8 py-3 border border-transparent text-base font-medium rounded-md text-indigo-600 bg-white hover:bg-gray-50 md:py-4 md:text-lg md:px-10">
+                            查看文档
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Features Section -->
+    <section id="features" class="py-16 bg-white">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="lg:text-center">
+                <h2 class="text-3xl font-extrabold tracking-tight text-gray-900 sm:text-4xl">
+                    强大的功能特性
+                </h2>
+                <p class="mt-4 max-w-2xl text-xl text-gray-500 lg:mx-auto">
+                    为Vue开发者打造的智能工具集，让代码质量管理变得简单高效。
+                </p>
+            </div>
+
+            <div class="mt-16">
+                <div class="grid grid-cols-1 gap-8 md:grid-cols-2 lg:grid-cols-3">
+                    <!-- Feature 1 -->
+                    <div class="bg-gray-50 rounded-lg p-6 hover:shadow-lg transition duration-300">
+                        <div class="text-indigo-600 text-3xl mb-4">🔍</div>
+                        <h3 class="text-lg font-medium text-gray-900">智能代码分析</h3>
+                        <p class="mt-2 text-gray-500">
+                            自动检测命名规范、Props验证、生命周期使用等潜在问题，提供详细的分析报告。
+                        </p>
+                    </div>
+
+                    <!-- Feature 2 -->
+                    <div class="bg-gray-50 rounded-lg p-6 hover:shadow-lg transition duration-300">
+                        <div class="text-indigo-600 text-3xl mb-4">🛠</div>
+                        <h3 class="text-lg font-medium text-gray-900">自动问题修复</h3>
+                        <p class="mt-2 text-gray-500">
+                            一键修复检测到的问题，智能优化代码结构，提高代码质量。
+                        </p>
+                    </div>
+
+                    <!-- Feature 3 -->
+                    <div class="bg-gray-50 rounded-lg p-6 hover:shadow-lg transition duration-300">
+                        <div class="text-indigo-600 text-3xl mb-4">⚡️</div>
+                        <h3 class="text-lg font-medium text-gray-900">性能优化建议</h3>
+                        <p class="mt-2 text-gray-500">
+                            分析组件性能瓶颈，提供优化建议，提升应用运行效率。
+                        </p>
+                    </div>
+
+                    <!-- Feature 4 -->
+                    <div class="bg-gray-50 rounded-lg p-6 hover:shadow-lg transition duration-300">
+                        <div class="text-indigo-600 text-3xl mb-4">📚</div>
+                        <h3 class="text-lg font-medium text-gray-900">最佳实践指南</h3>
+                        <p class="mt-2 text-gray-500">
+                            基于Vue.js官方推荐的最佳实践，帮助团队保持一致的代码风格。
+                        </p>
+                    </div>
+
+                    <!-- Feature 5 -->
+                    <div class="bg-gray-50 rounded-lg p-6 hover:shadow-lg transition duration-300">
+                        <div class="text-indigo-600 text-3xl mb-4">🔌</div>
+                        <h3 class="text-lg font-medium text-gray-900">IDE集成支持</h3>
+                        <p class="mt-2 text-gray-500">
+                            支持VSCode和Cursor编辑器，提供无缝的开发体验。
+                        </p>
+                    </div>
+
+                    <!-- Feature 6 -->
+                    <div class="bg-gray-50 rounded-lg p-6 hover:shadow-lg transition duration-300">
+                        <div class="text-indigo-600 text-3xl mb-4">⚙️</div>
+                        <h3 class="text-lg font-medium text-gray-900">灵活配置选项</h3>
+                        <p class="mt-2 text-gray-500">
+                            提供丰富的配置选项，满足不同团队的个性化需求。
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Demo Section -->
+    <section id="demo" class="py-16 bg-gray-50">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="lg:text-center mb-12">
+                <h2 class="text-3xl font-extrabold tracking-tight text-gray-900 sm:text-4xl">
+                    在线体验
+                </h2>
+                <p class="mt-4 max-w-2xl text-xl text-gray-500 lg:mx-auto">
+                    粘贴你的Vue组件代码，立即体验智能分析功能。
+                </p>
+            </div>
+
+            <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+                <!-- Code Input -->
+                <div class="bg-white rounded-lg shadow-lg p-6">
+                    <h3 class="text-lg font-medium text-gray-900 mb-4">组件代码</h3>
+                    <div id="editor" class="h-96 border rounded"></div>
+                    <div class="mt-4 flex justify-between">
+                        <button id="analyzeBtn" class="bg-indigo-600 text-white px-6 py-2 rounded hover:bg-indigo-700 transition duration-300">
+                            分析组件
+                        </button>
+                        <button id="fixBtn" class="bg-green-600 text-white px-6 py-2 rounded hover:bg-green-700 transition duration-300" disabled>
+                            修复问题
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Analysis Results -->
+                <div class="bg-white rounded-lg shadow-lg p-6">
+                    <h3 class="text-lg font-medium text-gray-900 mb-4">分析结果</h3>
+                    <div id="results" class="h-96 overflow-y-auto">
+                        <div class="text-gray-500 text-center mt-32">
+                            在左侧输入Vue组件代码并点击"分析组件"开始分析
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Integration Section -->
+    <section class="py-16 bg-white">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="lg:text-center">
+                <h2 class="text-3xl font-extrabold tracking-tight text-gray-900 sm:text-4xl">
+                    开始使用
+                </h2>
+                <p class="mt-4 max-w-2xl text-xl text-gray-500 lg:mx-auto">
+                    选择你喜欢的方式集成VueSage
+                </p>
+            </div>
+
+            <div class="mt-16 grid grid-cols-1 gap-8 md:grid-cols-2">
+                <!-- VSCode Extension -->
+                <div class="bg-gray-50 rounded-lg p-8 hover:shadow-lg transition duration-300">
+                    <h3 class="text-xl font-bold text-gray-900 mb-4">VSCode 扩展</h3>
+                    <p class="text-gray-500 mb-4">
+                        在VSCode中直接使用VueSage，获得实时代码分析和修复建议。
+                    </p>
+                    <pre class="bg-gray-800 text-gray-100 p-4 rounded"><code>ext install vuesage</code></pre>
+                </div>
+
+                <!-- Cursor Extension -->
+                <div class="bg-gray-50 rounded-lg p-8 hover:shadow-lg transition duration-300">
+                    <h3 class="text-xl font-bold text-gray-900 mb-4">Cursor 扩展</h3>
+                    <p class="text-gray-500 mb-4">
+                        在Cursor编辑器中使用VueSage，享受AI驱动的代码分析体验。
+                    </p>
+                    <pre class="bg-gray-800 text-gray-100 p-4 rounded"><code>cursor install vuesage</code></pre>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <footer class="bg-white border-t border-gray-200">
+        <div class="max-w-7xl mx-auto py-12 px-4 sm:px-6 md:flex md:items-center md:justify-between lg:px-8">
+            <div class="flex justify-center space-x-6 md:order-2">
+                <a href="https://github.com/lq0910/vuesage" class="text-gray-400 hover:text-gray-500">
+                    <span class="sr-only">GitHub</span>
+                    <svg class="h-6 w-6" fill="currentColor" viewBox="0 0 24 24">
+                        <path fill-rule="evenodd" d="M12 2C6.477 2 2 6.484 2 12.017c0 4.425 2.865 8.18 6.839 9.504.5.092.682-.217.682-.483 0-.237-.008-.868-.013-1.703-2.782.605-3.369-1.343-3.369-1.343-.454-1.158-1.11-1.466-1.11-1.466-.908-.62.069-.608.069-.608 1.003.07 1.531 1.032 1.531 1.032.892 1.53 2.341 1.088 2.91.832.092-.647.35-1.088.636-1.338-2.22-.253-4.555-1.113-4.555-4.951 0-1.093.39-1.988 1.029-2.688-.103-.253-.446-1.272.098-2.65 0 0 .84-.27 2.75 1.026A9.564 9.564 0 0112 6.844c.85.004 1.705.115 2.504.337 1.909-1.296 2.747-1.027 2.747-1.027.546 1.379.202 2.398.1 2.651.64.7 1.028 1.595 1.028 2.688 0 3.848-2.339 4.695-4.566 4.943.359.309.678.92.678 1.855 0 1.338-.012 2.419-.012 2.747 0 .268.18.58.688.482A10.019 10.019 0 0022 12.017C22 6.484 17.522 2 12 2z" clip-rule="evenodd" />
+                    </svg>
+                </a>
+            </div>
+            <div class="mt-8 md:mt-0 md:order-1">
+                <p class="text-center text-base text-gray-400">
+                    &copy; 2025 VueSage. All rights reserved.
+                </p>
+            </div>
+        </div>
+    </footer>
+
+    <script src="https://cdn.jsdelivr.net/npm/monaco-editor@0.33.0/min/vs/loader.js"></script>
+    <script>
+        require.config({ paths: { vs: 'https://cdn.jsdelivr.net/npm/monaco-editor@0.33.0/min/vs' } });
+
+        require(['vs/editor/editor.main'], function () {
+            // 初始化编辑器
+            const editor = monaco.editor.create(document.getElementById('editor'), {
+                value: `<template>\n  <div class="example">\n    <!-- 在这里粘贴你的Vue组件代码 -->\n  </div>\n</template>`,
+                language: 'html',
+                theme: 'vs-light',
+                minimap: { enabled: false }
+            });
+
+            // 分析按钮点击事件
+            document.getElementById('analyzeBtn').addEventListener('click', async () => {
+                const code = editor.getValue();
+                try {
+                    const response = await fetch('http://localhost:6188/analyze', {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify({ component: code })
+                    });
+                    
+                    const data = await response.json();
+                    displayResults(data);
+                    document.getElementById('fixBtn').disabled = !data.summary.hasAutoFixableIssues;
+                } catch (error) {
+                    displayError('分析过程中出错: ' + error.message);
+                }
+            });
+
+            // 修复按钮点击事件
+            document.getElementById('fixBtn').addEventListener('click', async () => {
+                const code = editor.getValue();
+                try {
+                    const analysisResponse = await fetch('http://localhost:6188/analyze', {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify({ component: code })
+                    });
+                    
+                    const analysisData = await analysisResponse.json();
+                    const issues = analysisData.issues.flatMap(category => category.issues);
+                    
+                    const fixResponse = await fetch('http://localhost:6188/fix', {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify({ component: code, issues })
+                    });
+                    
+                    const fixData = await fixResponse.json();
+                    editor.setValue(fixData.fixedComponent);
+                    displayFixResults(fixData.appliedFixes);
+                } catch (error) {
+                    displayError('修复过程中出错: ' + error.message);
+                }
+            });
+
+            // 显示分析结果
+            function displayResults(data) {
+                const resultsDiv = document.getElementById('results');
+                let html = `
+                    <div class="mb-4 p-4 bg-gray-50 rounded">
+                        <h3 class="font-semibold">总结</h3>
+                        <p>发现 ${data.summary.totalIssues} 个问题，涉及 ${data.summary.categories} 个类别</p>
+                    </div>
+                `;
+
+                data.issues.forEach(category => {
+                    html += `
+                        <div class="mb-4">
+                            <h3 class="font-semibold text-lg mb-2">${category.category}</h3>
+                            <ul class="space-y-2">
+                                ${category.issues.map(issue => `
+                                    <li class="p-3 ${issue.severity === 'error' ? 'bg-red-50' : 'bg-yellow-50'} rounded">
+                                        <div class="flex items-center">
+                                            <span class="w-2 h-2 rounded-full ${issue.severity === 'error' ? 'bg-red-500' : 'bg-yellow-500'} mr-2"></span>
+                                            <span>${issue.message}</span>
+                                        </div>
+                                        ${issue.autofix ? '<span class="text-sm text-green-600 mt-1">✓ 可自动修复</span>' : ''}
+                                    </li>
+                                `).join('')}
+                            </ul>
+                        </div>
+                    `;
+                });
+
+                resultsDiv.innerHTML = html;
+            }
+
+            // 显示修复结果
+            function displayFixResults(fixes) {
+                const resultsDiv = document.getElementById('results');
+                let html = `
+                    <div class="mb-4 p-4 bg-green-50 rounded">
+                        <h3 class="font-semibold text-green-700">修复完成</h3>
+                        <p>应用了 ${fixes.length} 个修复</p>
+                    </div>
+                    <ul class="space-y-2">
+                        ${fixes.map(fix => `
+                            <li class="p-3 bg-gray-50 rounded">
+                                <span class="text-green-600">✓</span> ${fix.message}
+                            </li>
+                        `).join('')}
+                    </ul>
+                `;
+                resultsDiv.innerHTML = html;
+            }
+
+            // 显示错误信息
+            function displayError(message) {
+                const resultsDiv = document.getElementById('results');
+                resultsDiv.innerHTML = `
+                    <div class="p-4 bg-red-50 text-red-700 rounded">
+                        <h3 class="font-semibold mb-2">错误</h3>
+                        <p>${message}</p>
+                    </div>
+                `;
+            }
+        });
+    </script>
+</body>
+</html> 

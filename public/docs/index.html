@@ -1,0 +1,504 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>VueSage 文档</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="bg-gray-50">
+    <nav class="bg-white shadow-lg">
+        <div class="max-w-7xl mx-auto px-4">
+            <div class="flex justify-between h-16">
+                <div class="flex">
+                    <div class="flex-shrink-0 flex items-center">
+                        <a href="../index.html" class="text-2xl font-bold text-gray-900">VueSage</a>
+                    </div>
+                    <div class="hidden sm:ml-6 sm:flex sm:space-x-8">
+                        <a href="#introduction" class="border-indigo-500 text-gray-900 inline-flex items-center px-1 pt-1 border-b-2 text-sm font-medium">
+                            介绍
+                        </a>
+                        <a href="#api" class="border-transparent text-gray-500 hover:border-gray-300 hover:text-gray-700 inline-flex items-center px-1 pt-1 border-b-2 text-sm font-medium">
+                            API
+                        </a>
+                        <a href="#config" class="border-transparent text-gray-500 hover:border-gray-300 hover:text-gray-700 inline-flex items-center px-1 pt-1 border-b-2 text-sm font-medium">
+                            配置
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <main class="max-w-7xl mx-auto py-6 sm:px-6 lg:px-8">
+        <div class="px-4 py-6 sm:px-0">
+            <div class="border-4 border-dashed border-gray-200 rounded-lg p-8">
+                <section id="introduction" class="mb-12">
+                    <h2 class="text-3xl font-bold text-gray-900 mb-8">Vue组件智能分析与优化引擎</h2>
+                    
+                    <div class="mb-12">
+                        <h3 class="text-xl font-semibold text-gray-900 mb-4">功能特点</h3>
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                            <div class="bg-white p-6 rounded-lg shadow">
+                                <h4 class="font-medium text-gray-900 mb-2">智能分析</h4>
+                                <p class="text-gray-600">自动检测Vue组件中的潜在问题，包括命名规范、Props验证、生命周期使用等。</p>
+                            </div>
+                            <div class="bg-white p-6 rounded-lg shadow">
+                                <h4 class="font-medium text-gray-900 mb-2">自动修复</h4>
+                                <p class="text-gray-600">针对检测到的问题提供自动修复方案，一键优化组件代码。</p>
+                            </div>
+                            <div class="bg-white p-6 rounded-lg shadow">
+                                <h4 class="font-medium text-gray-900 mb-2">性能优化</h4>
+                                <p class="text-gray-600">分析并优化模板性能，提供代码复杂度建议。</p>
+                            </div>
+                            <div class="bg-white p-6 rounded-lg shadow">
+                                <h4 class="font-medium text-gray-900 mb-2">最佳实践</h4>
+                                <p class="text-gray-600">基于Vue.js官方推荐的最佳实践，确保代码质量。</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="mb-12">
+                        <h3 class="text-xl font-semibold text-gray-900 mb-4">快速开始</h3>
+                        <div class="bg-white p-6 rounded-lg shadow">
+                            <h4 class="font-medium text-gray-900 mb-4">全局安装</h4>
+                            <pre class="bg-gray-50 p-4 rounded"><code>npm install -g vuesage</code></pre>
+                            
+                            <h4 class="font-medium text-gray-900 mt-6 mb-4">项目安装</h4>
+                            <pre class="bg-gray-50 p-4 rounded"><code>npm install vuesage</code></pre>
+
+                            <h4 class="font-medium text-gray-900 mt-6 mb-4">使用方式</h4>
+                            <p class="text-gray-600 mb-4">1. 作为 MCP 服务使用：</p>
+                            <pre class="bg-gray-50 p-4 rounded"><code>{
+  "services": {
+    "vuesage": {
+      "name": "vuesage",
+      "type": "service",
+      "transport": "stdio",
+      "command": "vuesage",
+      "runtime": "node",
+      "global": true,
+      "capabilities": {
+        "analyze": {
+          "description": "分析Vue组件代码质量"
+        },
+        "fix": {
+          "description": "修复代码问题"
+        }
+      }
+    }
+  }
+}</code></pre>
+
+                            <p class="text-gray-600 mt-6 mb-4">2. 作为 Node.js 模块使用：</p>
+                            <pre class="bg-gray-50 p-4 rounded"><code>import { VueSage } from 'vuesage';
+
+// 创建实例
+const vueSage = new VueSage();
+
+// 分析组件
+const analysis = await vueSage.analyze(componentCode);
+
+// 修复问题
+const fixed = await vueSage.fix(componentCode, analysis.issues);</code></pre>
+
+                            <p class="text-gray-600 mt-6 mb-4">3. 作为独立服务使用：</p>
+                            <pre class="bg-gray-50 p-4 rounded"><code># 启动服务
+vuesage serve</code></pre>
+                        </div>
+                    </div>
+                </section>
+
+                <section id="api" class="mb-12">
+                    <h3 class="text-xl font-semibold text-gray-900 mb-4">API 参考</h3>
+                    <div class="bg-white p-6 rounded-lg shadow space-y-6">
+                        <div>
+                            <h4 class="font-medium text-gray-900 mb-4">analyze(code: string): Promise&lt;Analysis&gt;</h4>
+                            <p class="text-gray-600 mb-4">分析Vue组件代码，返回分析结果。</p>
+                            <pre class="bg-gray-50 p-4 rounded"><code>interface Analysis {
+  summary: {
+    totalIssues: number;
+    categories: string[];
+    hasAutoFixableIssues: boolean;
+  };
+  issues: Array<{
+    category: string;
+    issues: Array<{
+      id: string;
+      message: string;
+      severity: 'error' | 'warning';
+      autofix: boolean;
+      line?: number;
+      column?: number;
+    }>;
+  }>;
+}</code></pre>
+                        </div>
+
+                        <div>
+                            <h4 class="font-medium text-gray-900 mb-4">fix(code: string, issues: Issue[]): Promise&lt;FixResult&gt;</h4>
+                            <p class="text-gray-600 mb-4">根据分析结果修复组件代码。</p>
+                            <pre class="bg-gray-50 p-4 rounded"><code>interface FixResult {
+  success: boolean;
+  fixedComponent: string;
+  appliedFixes: Array<{
+    id: string;
+    message: string;
+    type: string;
+  }>;
+}</code></pre>
+                        </div>
+
+                        <div>
+                            <h4 class="font-medium text-gray-900 mb-4">HTTP API</h4>
+                            <p class="text-gray-600 mb-2">POST /analyze</p>
+                            <pre class="bg-gray-50 p-4 rounded mb-4"><code>// 请求体
+{
+  "component": "Vue组件代码"
+}
+
+// 响应
+{
+  "summary": {
+    "totalIssues": 5,
+    "categories": ["naming", "props", "performance"],
+    "hasAutoFixableIssues": true
+  },
+  "issues": [
+    {
+      "category": "naming",
+      "issues": [
+        {
+          "id": "naming-001",
+          "message": "组件名称应使用 PascalCase",
+          "severity": "warning",
+          "autofix": true
+        }
+      ]
+    }
+  ]
+}</code></pre>
+
+                            <p class="text-gray-600 mb-2">POST /fix</p>
+                            <pre class="bg-gray-50 p-4 rounded"><code>// 请求体
+{
+  "component": "组件代码",
+  "issues": ["issue_id_1", "issue_id_2"]
+}
+
+// 响应
+{
+  "success": true,
+  "fixedComponent": "修复后的组件代码",
+  "appliedFixes": [
+    {
+      "id": "naming-001",
+      "message": "已将组件名称修改为 PascalCase",
+      "type": "naming"
+    }
+  ]
+}</code></pre>
+                        </div>
+                    </div>
+                </section>
+
+                <section id="config" class="mb-12">
+                    <h3 class="text-xl font-semibold text-gray-900 mb-4">配置指南</h3>
+                    <div class="bg-white p-6 rounded-lg shadow">
+                        <div class="mb-8">
+                            <h4 class="font-medium text-gray-900 mb-4">配置文件</h4>
+                            <p class="text-gray-600 mb-4">
+                                在项目根目录创建 <code class="bg-gray-100 px-2 py-1 rounded">.vuesagerc.json</code> 文件：
+                            </p>
+                            <pre class="bg-gray-50 p-4 rounded"><code>{
+  "rules": {
+    "naming": {
+      "enabled": true,
+      "severity": "warning",
+      "options": {
+        "componentPrefix": "App",
+        "propsCasing": "camelCase"
+      }
+    },
+    "props": {
+      "enabled": true,
+      "severity": "warning",
+      "options": {
+        "requireType": true,
+        "requireDefault": true
+      }
+    },
+    "template": {
+      "enabled": true,
+      "severity": "error",
+      "options": {
+        "maxLength": 80,
+        "requireKey": true
+      }
+    }
+  },
+  "autofix": {
+    "safeMode": true,
+    "backup": true,
+    "ignoreFiles": ["dist/**/*", "node_modules/**/*"]
+  },
+  "formatting": {
+    "indentSize": 2,
+    "maxLineLength": 100,
+    "singleQuote": true
+  }
+}</code></pre>
+                        </div>
+
+                        <div class="space-y-8">
+                            <div>
+                                <h4 class="font-medium text-gray-900 mb-4">规则配置说明</h4>
+                                <div class="space-y-6">
+                                    <div>
+                                        <h5 class="font-medium text-gray-800 mb-2">命名规范 (naming)</h5>
+                                        <ul class="list-disc pl-5 space-y-2 text-gray-600">
+                                            <li><strong>componentPrefix</strong>: 组件名称前缀</li>
+                                            <li><strong>propsCasing</strong>: Props 命名风格 (camelCase/PascalCase)</li>
+                                            <li>组件名称规范检查</li>
+                                            <li>事件名称规范检查</li>
+                                        </ul>
+                                    </div>
+                                    
+                                    <div>
+                                        <h5 class="font-medium text-gray-800 mb-2">Props 验证 (props)</h5>
+                                        <ul class="list-disc pl-5 space-y-2 text-gray-600">
+                                            <li><strong>requireType</strong>: 是否要求类型声明</li>
+                                            <li><strong>requireDefault</strong>: 是否要求默认值</li>
+                                            <li>类型检查</li>
+                                            <li>必填项验证</li>
+                                            <li>自定义验证器检查</li>
+                                        </ul>
+                                    </div>
+                                    
+                                    <div>
+                                        <h5 class="font-medium text-gray-800 mb-2">模板规范 (template)</h5>
+                                        <ul class="list-disc pl-5 space-y-2 text-gray-600">
+                                            <li><strong>maxLength</strong>: 模板行最大长度</li>
+                                            <li><strong>requireKey</strong>: v-for 是否必须使用 key</li>
+                                            <li>指令使用规范</li>
+                                            <li>性能优化建议</li>
+                                            <li>可访问性检查</li>
+                                        </ul>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div>
+                                <h4 class="font-medium text-gray-900 mb-4">自动修复配置</h4>
+                                <ul class="list-disc pl-5 space-y-2 text-gray-600">
+                                    <li><strong>safeMode</strong>: 启用安全模式，只应用无风险的修复</li>
+                                    <li><strong>backup</strong>: 修复前自动备份文件</li>
+                                    <li><strong>ignoreFiles</strong>: 排除不需要分析的文件</li>
+                                </ul>
+                            </div>
+
+                            <div>
+                                <h4 class="font-medium text-gray-900 mb-4">格式化配置</h4>
+                                <ul class="list-disc pl-5 space-y-2 text-gray-600">
+                                    <li><strong>indentSize</strong>: 缩进空格数</li>
+                                    <li><strong>maxLineLength</strong>: 每行最大长度</li>
+                                    <li><strong>singleQuote</strong>: 使用单引号</li>
+                                </ul>
+                            </div>
+
+                            <div>
+                                <h4 class="font-medium text-gray-900 mb-4">配置优先级</h4>
+                                <ol class="list-decimal pl-5 space-y-2 text-gray-600">
+                                    <li>命令行参数</li>
+                                    <li>项目根目录 .vuesagerc.json</li>
+                                    <li>package.json 中的 vuesage 字段</li>
+                                    <li>默认配置</li>
+                                </ol>
+                            </div>
+
+                            <div>
+                                <h4 class="font-medium text-gray-900 mb-4">环境变量</h4>
+                                <ul class="list-disc pl-5 space-y-2 text-gray-600">
+                                    <li><code class="bg-gray-100 px-2 py-1 rounded">DEBUG=vuesage:*</code> - 开启调试模式</li>
+                                    <li><code class="bg-gray-100 px-2 py-1 rounded">VUESAGE_CONFIG_PATH</code> - 指定配置文件路径</li>
+                                    <li><code class="bg-gray-100 px-2 py-1 rounded">VUESAGE_DISABLE_AUTOFIX</code> - 禁用自动修复</li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+                <section id="api" class="mb-12">
+                    <h3 class="text-xl font-semibold text-gray-900 mb-4">使用示例</h3>
+                    <div class="bg-white p-6 rounded-lg shadow space-y-6">
+                        <div>
+                            <h4 class="font-medium text-gray-900 mb-4">Cursor 对话框使用</h4>
+                            <div class="space-y-6">
+                                <div>
+                                    <h5 class="text-gray-700 mb-2">对话示例</h5>
+                                    <pre class="bg-gray-50 p-4 rounded"><code>用户: 请分析 src/components/Header.vue 的代码质量
+
+助手: 我来帮您分析 Header.vue 组件的代码质量。
+
+分析结果显示以下问题：
+1. 命名规范问题：
+   - 组件名称使用了小写 'header'，应该改为 'Header'
+   - 事件名称 'click' 应该使用 kebab-case: 'on-click'
+
+2. Props 验证问题：
+   - title prop 缺少类型声明
+   - isFixed prop 缺少默认值
+
+是否需要我帮您修复这些问题？
+
+用户: 是的，请帮我修复
+
+助手: 好的，我来帮您修复这些问题...</code></pre>
+                                </div>
+
+                                <div>
+                                    <h5 class="text-gray-700 mb-2">常用命令</h5>
+                                    <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                                        <div>
+                                            <h6 class="font-medium mb-2">命令方式</h6>
+                                            <ul class="space-y-2 text-sm">
+                                                <li><code class="bg-gray-100 px-2 py-1 rounded">/analyze MyComponent.vue</code></li>
+                                                <li><code class="bg-gray-100 px-2 py-1 rounded">/batch src/**/*.vue</code></li>
+                                                <li><code class="bg-gray-100 px-2 py-1 rounded">/fix MyComponent.vue</code></li>
+                                                <li><code class="bg-gray-100 px-2 py-1 rounded">/optimize MyComponent.vue</code></li>
+                                                <li><code class="bg-gray-100 px-2 py-1 rounded">/rules</code></li>
+                                            </ul>
+                                        </div>
+                                        <div>
+                                            <h6 class="font-medium mb-2">自然语言方式</h6>
+                                            <ul class="space-y-2 text-sm">
+                                                <li>"分析这个组件的代码质量"</li>
+                                                <li>"检查整个项目的 Vue 文件"</li>
+                                                <li>"帮我修复这些问题"</li>
+                                                <li>"优化这个组件的性能"</li>
+                                                <li>"显示所有可用的规则"</li>
+                                            </ul>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div>
+                                    <h5 class="text-gray-700 mb-2">使用提示</h5>
+                                    <ul class="list-disc pl-5 space-y-2 text-gray-600">
+                                        <li>所有命令都支持自然语言表达</li>
+                                        <li>可以在对话中随时询问具体的规则说明</li>
+                                        <li>分析结果会直接在对话框中展示</li>
+                                        <li>修复建议会在执行前征求您的同意</li>
+                                        <li>可以通过对话框调整分析的严格程度</li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div>
+                            <h4 class="font-medium text-gray-900 mb-4">命令行使用</h4>
+                            <div class="space-y-4">
+                                <div>
+                                    <h5 class="text-gray-700 mb-2">单文件分析</h5>
+                                    <pre class="bg-gray-50 p-4 rounded"><code># 分析单个组件文件
+vuesage analyze test/TestComponent.vue
+
+# 分析并自动修复
+vuesage analyze test/TestComponent.vue --fix
+
+# 指定规则进行分析
+vuesage analyze test/TestComponent.vue --rules naming,props,template
+
+# 输出详细信息
+vuesage analyze test/TestComponent.vue --verbose</code></pre>
+                                </div>
+                                
+                                <div>
+                                    <h5 class="text-gray-700 mb-2">批量分析</h5>
+                                    <pre class="bg-gray-50 p-4 rounded"><code># 分析整个项目的 Vue 文件
+vuesage batch src/**/*.vue
+
+# 排除特定目录
+vuesage batch "src/**/*.vue" --exclude "src/vendor/**"
+
+# 指定并发数
+vuesage batch "src/**/*.vue" --concurrent 4
+
+# 生成 HTML 报告
+vuesage batch "src/**/*.vue" --format html --output-dir ./reports</code></pre>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div>
+                            <h4 class="font-medium text-gray-900 mb-4">Agent 模式使用</h4>
+                            <pre class="bg-gray-50 p-4 rounded"><code>// 分析单个组件
+const analysis = await agent.analyze({
+  component: vueComponentCode,
+  options: {
+    rules: ['naming', 'props', 'template'],
+    fix: true
+  }
+});
+
+// 批量分析
+const batchResults = await agent.batch({
+  include: ['src/**/*.vue'],
+  exclude: ['node_modules/**'],
+  concurrent: 4,
+  options: {
+    fix: true,
+    rules: ['all']
+  }
+});</code></pre>
+                        </div>
+
+                        <div>
+                            <h4 class="font-medium text-gray-900 mb-4">分析结果示例</h4>
+                            <pre class="bg-gray-50 p-4 rounded"><code>{
+  "summary": {
+    "totalIssues": 3,
+    "categories": ["naming", "props", "template"],
+    "hasAutoFixableIssues": true
+  },
+  "issues": [
+    {
+      "category": "naming",
+      "issues": [
+        {
+          "id": "naming-001",
+          "message": "组件名称应使用 PascalCase",
+          "severity": "warning",
+          "autofix": true,
+          "line": 15
+        }
+      ]
+    }
+  ]
+}</code></pre>
+                        </div>
+                    </div>
+                </section>
+            </div>
+        </div>
+    </main>
+
+    <footer class="bg-white">
+        <div class="max-w-7xl mx-auto py-12 px-4 sm:px-6 md:flex md:items-center md:justify-between lg:px-8">
+            <div class="flex justify-center space-x-6 md:order-2">
+                <a href="https://github.com/lq0910/vuesage" class="text-gray-400 hover:text-gray-500">
+                    <span class="sr-only">GitHub</span>
+                    <svg class="h-6 w-6" fill="currentColor" viewBox="0 0 24 24">
+                        <path fill-rule="evenodd" d="M12 2C6.477 2 2 6.484 2 12.017c0 4.425 2.865 8.18 6.839 9.504.5.092.682-.217.682-.483 0-.237-.008-.868-.013-1.703-2.782.605-3.369-1.343-3.369-1.343-.454-1.158-1.11-1.466-1.11-1.466-.908-.62.069-.608.069-.608 1.003.07 1.531 1.032 1.531 1.032.892 1.53 2.341 1.088 2.91.832.092-.647.35-1.088.636-1.338-2.22-.253-4.555-1.113-4.555-4.951 0-1.093.39-1.988 1.029-2.688-.103-.253-.446-1.272.098-2.65 0 0 .84-.27 2.75 1.026A9.564 9.564 0 0112 6.844c.85.004 1.705.115 2.504.337 1.909-1.296 2.747-1.027 2.747-1.027.546 1.379.202 2.398.1 2.651.64.7 1.028 1.595 1.028 2.688 0 3.848-2.339 4.695-4.566 4.943.359.309.678.92.678 1.855 0 1.338-.012 2.419-.012 2.747 0 .268.18.58.688.482A10.019 10.019 0 0022 12.017C22 6.484 17.522 2 12 2z" clip-rule="evenodd" />
+                    </svg>
+                </a>
+            </div>
+            <div class="mt-8 md:mt-0 md:order-1">
+                <p class="text-center text-base text-gray-400">
+                    &copy; 2024 VueSage. All rights reserved.
+                </p>
+            </div>
+        </div>
+    </footer>
+</body>
+</html> 
