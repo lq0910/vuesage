@@ -46,7 +46,12 @@ export class VueAnalyzer {
       ...this.analyzeStyles(styles),
       ...this.analyzeLifecycle(script),
       ...this.analyzeComplexity(script),
-      ...this.analyzePerformance(template, script)
+      ...this.analyzePerformance(template, script),
+      ...this.analyzeCompositionAPI(script),
+      ...this.analyzeAccessibility(template),
+      ...this.analyzeSecurity(template, script),
+      ...this.analyzeI18n(template),
+      ...this.analyzeCodeStyle(script)
     ];
 
     return {
@@ -326,5 +331,227 @@ export class VueAnalyzer {
     }
     
     return maxDepth;
+  }
+
+  /**
+   * 分析 Composition API 相关问题
+   */
+  analyzeCompositionAPI(script) {
+    const issues = [];
+
+    // 检查 setup 语法糖
+    const isSetupSugar = script.includes('<script setup>');
+    
+    // 检查 ref 和 reactive 的使用
+    const refCount = (script.match(/ref\(/g) || []).length;
+    const reactiveCount = (script.match(/reactive\(/g) || []).length;
+    
+    if (refCount + reactiveCount > 10) {
+      issues.push({
+        type: 'warning',
+        message: `响应式变量过多（${refCount + reactiveCount}个），建议合并相关状态`,
+        fix: 'mergeState'
+      });
+    }
+
+    // 检查 watch 和 watchEffect 的使用
+    const watchCount = (script.match(/watch\(/g) || []).length;
+    const watchEffectCount = (script.match(/watchEffect\(/g) || []).length;
+    
+    if (watchCount + watchEffectCount > 5) {
+      issues.push({
+        type: 'warning',
+        message: `监听器过多（${watchCount + watchEffectCount}个），可能影响性能`,
+        fix: 'optimizeWatchers'
+      });
+    }
+
+    // 检查计算属性的复杂度
+    const computedMatches = script.match(/computed\(\(\)\s*=>\s*{([^}]+)}/g) || [];
+    computedMatches.forEach(match => {
+      if (match.includes('filter(') || match.includes('map(') || match.includes('reduce(')) {
+        issues.push({
+          type: 'performance',
+          message: '计算属性中包含复杂数组操作，建议使用缓存或提前处理',
+          fix: 'optimizeComputed'
+        });
+      }
+    });
+
+    // 检查生命周期钩子的使用
+    const lifecycleHooks = [
+      'onMounted',
+      'onBeforeMount',
+      'onUpdated',
+      'onBeforeUpdate',
+      'onUnmounted',
+      'onBeforeUnmount'
+    ];
+    
+    lifecycleHooks.forEach(hook => {
+      const count = (script.match(new RegExp(hook + '\\(', 'g')) || []).length;
+      if (count > 1) {
+        issues.push({
+          type: 'warning',
+          message: `多次使用了 ${hook} 钩子，建议合并相关逻辑`,
+          fix: 'mergeLifecycleHooks'
+        });
+      }
+    });
+
+    // 检查 provide/inject 的使用
+    if (script.includes('provide(') && !script.includes('/* @provide */')) {
+      issues.push({
+        type: 'style',
+        message: '使用 provide 时建议添加 @provide 注释以提高可维护性',
+        fix: 'addProvideComment'
+      });
+    }
+
+    return issues;
+  }
+
+  /**
+   * 分析可访问性问题
+   */
+  analyzeAccessibility(template) {
+    const issues = [];
+
+    // 检查图片的 alt 属性
+    const imgRegex = /<img[^>]*>/g;
+    const imgMatches = template.match(imgRegex) || [];
+    imgMatches.forEach(img => {
+      if (!img.includes('alt=')) {
+        issues.push({
+          type: 'accessibility',
+          message: '图片缺少 alt 属性，影响屏幕阅读器用户',
+          fix: 'addImgAlt'
+        });
+      }
+    });
+
+    // 检查按钮的 aria-label
+    const buttonRegex = /<button[^>]*>[^<]*<\/button>/g;
+    const buttonMatches = template.match(buttonRegex) || [];
+    buttonMatches.forEach(button => {
+      if (!button.includes('aria-label=') && !button.match(/>([^<]+)</)) {
+        issues.push({
+          type: 'accessibility',
+          message: '按钮缺少文本内容或 aria-label，影响屏幕阅读器用户',
+          fix: 'addAriaLabel'
+        });
+      }
+    });
+
+    // 检查表单控件的标签
+    const inputRegex = /<input[^>]*>/g;
+    const inputMatches = template.match(inputRegex) || [];
+    inputMatches.forEach(input => {
+      if (!input.includes('id=')) {
+        issues.push({
+          type: 'accessibility',
+          message: '表单控件缺少 id，无法与 label 关联',
+          fix: 'addInputId'
+        });
+      }
+    });
+
+    return issues;
+  }
+
+  /**
+   * 分析安全性问题
+   */
+  analyzeSecurity(template, script) {
+    const issues = [];
+
+    // 检查 v-html 使用
+    if (template.includes('v-html')) {
+      issues.push({
+        type: 'security',
+        message: '使用 v-html 可能导致 XSS 攻击风险，建议使用 v-text 或插值语法',
+        severity: 'error',
+        fix: 'replaceVHtml'
+      });
+    }
+
+    // 检查敏感信息存储
+    const sensitivePatterns = [
+      'password',
+      'token',
+      'secret',
+      'api_key',
+      'apikey'
+    ];
+    
+    sensitivePatterns.forEach(pattern => {
+      const regex = new RegExp(`${pattern}\\s*=\\s*["'][^"']*["']`, 'i');
+      if (script.match(regex)) {
+        issues.push({
+          type: 'security',
+          message: `检测到可能的敏感信息硬编码（${pattern}），建议使用环境变量`,
+          severity: 'error',
+          fix: 'useEnvVariable'
+        });
+      }
+    });
+
+    return issues;
+  }
+
+  /**
+   * 分析国际化问题
+   */
+  analyzeI18n(template) {
+    const issues = [];
+
+    // 检查硬编码的文本
+    const textRegex = />([^<{}]+)</g;
+    const textMatches = template.match(textRegex) || [];
+    textMatches.forEach(match => {
+      const text = match.replace(/[><]/g, '').trim();
+      if (text.length > 0 && !/^\s*{{\s*[\w.]+\s*}}\s*$/.test(text)) {
+        issues.push({
+          type: 'i18n',
+          message: `检测到硬编码的文本："${text}"，建议使用国际化键值`,
+          fix: 'extractI18nKey'
+        });
+      }
+    });
+
+    return issues;
+  }
+
+  /**
+   * 分析代码风格
+   */
+  analyzeCodeStyle(script) {
+    const issues = [];
+
+    // 检查方法命名
+    const methodRegex = /(\w+)\s*\([^)]*\)\s*{/g;
+    let match;
+    while ((match = methodRegex.exec(script)) !== null) {
+      const methodName = match[1];
+      if (!/^[a-z][a-zA-Z0-9]*$/.test(methodName)) {
+        issues.push({
+          type: 'style',
+          message: `方法名 "${methodName}" 不符合驼峰命名规范`,
+          fix: 'fixMethodName'
+        });
+      }
+    }
+
+    // 检查过长的方法链
+    const chainRegex = /\.\w+\([^)]*\)\.\w+\([^)]*\)\.\w+\([^)]*\)/g;
+    if (script.match(chainRegex)) {
+      issues.push({
+        type: 'style',
+        message: '检测到过长的方法链，建议拆分为中间变量',
+        fix: 'splitMethodChain'
+      });
+    }
+
+    return issues;
   }
 } 

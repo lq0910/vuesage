@@ -1,13 +1,9 @@
 <!-- 这是一个测试组件 -->
 <template>
   <div class="test-component">
-    <h1 v-if="show">{{ title }}</h1>
-    <div v-for="(item, index) in items" :key="index">
-      {{ item.name }}
-    </div>
-    <button @click="handleClick">
-      {{ btnText }}
-    </button>
+    <img src="test.jpg">
+    <button v-on:click="handleClick">Click me</button>
+    <div v-html="rawHtml"></div>
   </div>
 </template>
 
@@ -25,12 +21,13 @@ export default {
     return {
       show: true,
       items: [],
-      btnText: '点击'
+      btnText: '点击',
+      rawHtml: '<span>Some HTML</span>',
     }
   },
   methods: {
     handleClick() {
-      this.items.push({ name: 'new item' })
+      console.log('clicked')
     }
   }
 }
@@ -39,5 +36,6 @@ export default {
 <style scoped>
 .test-component {
   color: #333;
+  background-color: #fff;
 }
 </style> 

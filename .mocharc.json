@@ -1,0 +1,9 @@
+{
+  "require": ["@babel/register"],
+  "spec": "test/**/*.test.js",
+  "watch-files": ["src/**/*.js", "test/**/*.js"],
+  "reporter": "spec",
+  "timeout": 5000,
+  "recursive": true,
+  "exit": true
+} 
