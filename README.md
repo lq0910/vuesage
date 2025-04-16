@@ -46,20 +46,73 @@ npm install vuesage
 
 #### 配置 MCP
 
-在 MCP 配置文件中添加：
+安装 vuesage 后，在编辑器的 MCP 配置文件中添加：
+
 ```json
 {
   "mcpServers": {
     "vuesage": {
-      "command": "npx",
-      "args": ["vuesage@1.1.7"],
-      "enabled": true
+      "command": "node",
+      "args": ["node_modules/vuesage/mcp-adapter.js"],
+      "enabled": true,
+      "capabilities": {
+        "analyze": {
+          "description": "分析 Vue 组件代码质量",
+          "input": {
+            "type": "object",
+            "properties": {
+              "component": {
+                "type": "string",
+                "description": "Vue 组件代码"
+              }
+            }
+          }
+        },
+        "fix": {
+          "description": "修复代码问题",
+          "input": {
+            "type": "object",
+            "properties": {
+              "component": {
+                "type": "string",
+                "description": "Vue 组件代码"
+              },
+              "issues": {
+                "type": "array",
+                "description": "需要修复的问题列表"
+              }
+            }
+          }
+        }
+      }
     }
   }
 }
 ```
 
-> 注意：当前支持的最新版本为 1.1.7
+支持的编辑器：
+- Cursor (推荐)
+- VSCode (需要安装 MCP 插件)
+
+#### 使用方法
+
+1. 在编辑器中打开 Vue 组件文件
+2. 使用以下方式之一：
+   - 命令面板（Command Palette）调用：
+     - `VueSage: Analyze Component` - 分析当前组件
+     - `VueSage: Fix Issues` - 修复检测到的问题
+   - 对话形式（仅 Cursor）：
+     - 直接输入 "分析当前组件" 或类似的自然语言指令
+     - AI 助手会调用 vuesage 服务分析代码
+
+#### 调试模式
+
+如果需要查看详细日志，可以设置环境变量：
+```bash
+export VUESAGE_DEBUG=true
+```
+
+日志文件位置：`~/.vuesage/logs/vuesage.log`
 
 ### 2. 作为 Node.js 模块使用
 

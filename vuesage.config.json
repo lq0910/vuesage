@@ -1,0 +1,36 @@
+{
+  "debug": false,
+  "logFile": "logs/vuesage.log",
+  "timeout": 30000,
+  "retries": 3,
+  "capabilities": {
+    "analyze": {
+      "description": "分析 Vue 组件代码质量",
+      "input": {
+        "type": "object",
+        "properties": {
+          "component": {
+            "type": "string",
+            "description": "Vue 组件代码"
+          }
+        }
+      }
+    },
+    "fix": {
+      "description": "修复代码问题",
+      "input": {
+        "type": "object",
+        "properties": {
+          "component": {
+            "type": "string",
+            "description": "Vue 组件代码"
+          },
+          "issues": {
+            "type": "array",
+            "description": "需要修复的问题列表"
+          }
+        }
+      }
+    }
+  }
+} 

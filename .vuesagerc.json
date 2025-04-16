@@ -65,5 +65,14 @@
     "output": "vuesage-report.json",
     "format": "json",
     "includeSource": false
+  },
+  "debug": true,
+  "port": 3000,
+  "host": "localhost",
+  "timeout": 30000,
+  "logLevel": "debug",
+  "mcp": {
+    "enabled": true,
+    "adapter": "./mcp-adapter.js"
   }
 } 

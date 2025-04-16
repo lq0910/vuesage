@@ -1,6 +1,5 @@
-import { strict as assert } from 'assert';
-import sinon from 'sinon';
-import Service from '../src/service.js';
+import { Service } from '../src/service.js';
+import { expect } from 'chai';
 
 describe('Service', () => {
   let service;
@@ -9,51 +8,44 @@ describe('Service', () => {
     service = new Service();
   });
 
-  afterEach(() => {
-    sinon.restore();
+  it('should analyze Vue component', async () => {
+    const component = `
+      <template>
+        <div>Hello</div>
+      </template>
+      <script>
+      export default {
+        name: 'HelloWorld'
+      }
+      </script>
+    `;
+
+    const result = await service.analyze(component);
+    expect(result).to.be.an('object');
+    expect(result).to.have.property('summary');
+    expect(result).to.have.property('issues');
   });
 
-  describe('analyze', () => {
-    it('should analyze Vue component and return results', async () => {
-      const mockComponent = `
-        <template>
-          <div>Hello World</div>
-        </template>
-        <script>
-        export default {
-          name: 'TestComponent'
-        }
-        </script>
-      `;
+  it('should fix Vue component issues', async () => {
+    const component = `
+      <template>
+        <div>Hello</div>
+      </template>
+      <script>
+      export default {
+        name: 'helloWorld'
+      }
+      </script>
+    `;
 
-      const result = await service.analyze(mockComponent);
-      assert.ok(result);
-      assert.ok(result.issues);
-      assert.ok(Array.isArray(result.issues));
-    });
-  });
+    const issues = [{
+      id: 'naming-001',
+      message: 'Component name should be in PascalCase'
+    }];
 
-  describe('fix', () => {
-    it('should fix issues in Vue component', async () => {
-      const mockComponent = `
-        <template>
-          <div v-for="item in items">{{ item }}</div>
-        </template>
-        <script>
-        export default {
-          data() {
-            return {
-              items: []
-            }
-          }
-        }
-        </script>
-      `;
-
-      const result = await service.fix(mockComponent);
-      assert.ok(result);
-      assert.ok(result.fixed);
-      assert.ok(typeof result.content === 'string');
-    });
+    const result = await service.fix(component, issues);
+    expect(result).to.be.an('object');
+    expect(result).to.have.property('fixed');
+    expect(result.fixed).to.be.a('string');
   });
 });

@@ -1,6 +1,6 @@
 {
   "name": "vuesage",
-  "version": "1.1.6",
+  "version": "1.1.7",
   "description": "Vue 组件智能分析与优化引擎",
   "type": "service",
   "transport": "stdio",

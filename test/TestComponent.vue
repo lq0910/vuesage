@@ -1,41 +1,30 @@
 <!-- 这是一个测试组件 -->
 <template>
   <div class="test-component">
-    <img src="test.jpg">
-    <button v-on:click="handleClick">Click me</button>
-    <div v-html="rawHtml"></div>
+    <h1>{{ title }}</h1>
+    <div v-for="item in items" :key="item">
+      {{ item }}
+    </div>
   </div>
 </template>
 
 <script>
 export default {
-  name: 'TestComponent',
-  props: {
-    title: {
-      type: String,
-      required: true,
-      default: '标题'
-    }
-  },
+  name: 'testcomponent',
   data() {
     return {
-      show: true,
-      items: [],
-      btnText: '点击',
-      rawHtml: '<span>Some HTML</span>',
+      title: 'Test Component',
+      items: []
     }
   },
-  methods: {
-    handleClick() {
-      console.log('clicked')
-    }
+  mounted() {
+    this.items.push('test')
   }
 }
 </script>
 
-<style scoped>
+<style>
 .test-component {
-  color: #333;
-  background-color: #fff;
+  color: red
 }
 </style> 
