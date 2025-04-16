@@ -1,0 +1,190 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>VueSage 代码质量报告</title>
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+    <style>
+        .nav-blur {
+            background: rgba(255, 255, 255, 0.8);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            border-bottom: 1px solid rgba(229, 231, 235, 0.5);
+        }
+        .gradient-text {
+            background: linear-gradient(45deg, #4F46E5, #7C3AED);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+        .report-card {
+            background: white;
+            border-radius: 8px;
+            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+        }
+        .issue {
+            border-left-width: 4px;
+        }
+        .issue.error { border-color: #dc2626; }
+        .issue.warning { border-color: #f59e0b; }
+        .issue.info { border-color: #3b82f6; }
+    </style>
+</head>
+<body class="bg-gray-50">
+    <!-- 导航栏 -->
+    <nav class="nav-blur fixed w-full z-50">
+        <div class="max-w-7xl mx-auto px-4">
+            <div class="flex justify-between h-16">
+                <div class="flex">
+                    <div class="flex-shrink-0 flex items-center">
+                        <a href="../../../index.html" class="text-2xl font-bold gradient-text">🧙‍♂️ VueSage</a>
+                    </div>
+                    <div class="hidden sm:ml-6 sm:flex sm:space-x-8">
+                        <a href="../../../index.html#features" class="border-transparent text-gray-900 inline-flex items-center px-1 pt-1 border-b-2 text-sm font-medium hover:border-indigo-500">
+                            功能特点
+                        </a>
+                        <a href="../../guide/getting-started.html" class="border-transparent text-gray-900 inline-flex items-center px-1 pt-1 border-b-2 text-sm font-medium hover:border-indigo-500">
+                            快速开始
+                        </a>
+                        <a href="../../guide/best-practices.html" class="border-transparent text-gray-900 inline-flex items-center px-1 pt-1 border-b-2 text-sm font-medium hover:border-indigo-500">
+                            最佳实践
+                        </a>
+                        <a href="../../API.html" class="border-transparent text-gray-900 inline-flex items-center px-1 pt-1 border-b-2 text-sm font-medium hover:border-indigo-500">
+                            API
+                        </a>
+                    </div>
+                </div>
+                <div class="flex items-center">
+                    <a href="https://github.com/lq0910/vuesage" target="_blank" class="inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md text-white bg-indigo-600 hover:bg-indigo-700">
+                        <svg class="w-5 h-5 mr-2" fill="currentColor" viewBox="0 0 24 24">
+                            <path fill-rule="evenodd" d="M12 2C6.477 2 2 6.484 2 12.017c0 4.425 2.865 8.18 6.839 9.504.5.092.682-.217.682-.483 0-.237-.008-.868-.013-1.703-2.782.605-3.369-1.343-3.369-1.343-.454-1.158-1.11-1.466-1.11-1.466-.908-.62.069-.608.069-.608 1.003.07 1.531 1.032 1.531 1.032.892 1.53 2.341 1.088 2.91.832.092-.647.35-1.088.636-1.338-2.22-.253-4.555-1.113-4.555-4.951 0-1.093.39-1.988 1.029-2.688-.103-.253-.446-1.272.098-2.65 0 0 .84-.27 2.75 1.026A9.564 9.564 0 0112 6.844c.85.004 1.705.115 2.504.337 1.909-1.296 2.747-1.027 2.747-1.027.546 1.379.202 2.398.1 2.651.64.7 1.028 1.595 1.028 2.688 0 3.848-2.339 4.695-4.566 4.943.359.309.678.92.678 1.855 0 1.338-.012 2.419-.012 2.747 0 .268.18.58.688.482A10.019 10.019 0 0022 12.017C22 6.484 17.522 2 12 2z" clip-rule="evenodd"/>
+                        </svg>
+                        GitHub
+                    </a>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <!-- 报告内容 -->
+    <div class="pt-16">
+        <div class="max-w-7xl mx-auto px-4 py-8">
+            <div class="report-card p-8">
+                <!-- 报告头部 -->
+                <div class="mb-8">
+                    <h1 class="text-3xl font-bold text-gray-900 mb-2">代码质量报告</h1>
+                    <p class="text-gray-500">分析时间：2024-04-15 14:01:46</p>
+                </div>
+
+                <!-- 总览 -->
+                <div class="grid grid-cols-1 md:grid-cols-4 gap-6 mb-8">
+                    <div class="bg-white p-6 rounded-lg border border-gray-200">
+                        <h3 class="text-lg font-medium text-gray-900 mb-2">总问题数</h3>
+                        <p class="text-3xl font-bold text-indigo-600">4</p>
+                    </div>
+                    <div class="bg-white p-6 rounded-lg border border-gray-200">
+                        <h3 class="text-lg font-medium text-gray-900 mb-2">问题类别</h3>
+                        <p class="text-3xl font-bold text-indigo-600">2</p>
+                    </div>
+                    <div class="bg-white p-6 rounded-lg border border-gray-200">
+                        <h3 class="text-lg font-medium text-gray-900 mb-2">可修复问题</h3>
+                        <p class="text-3xl font-bold text-indigo-600">4</p>
+                    </div>
+                    <div class="bg-white p-6 rounded-lg border border-gray-200">
+                        <h3 class="text-lg font-medium text-gray-900 mb-2">代码质量评分</h3>
+                        <p class="text-3xl font-bold text-indigo-600">90</p>
+                    </div>
+                </div>
+
+                <!-- 问题详情 -->
+                <div class="mb-8">
+                    <h2 class="text-2xl font-bold text-gray-900 mb-4">问题详情</h2>
+                    
+                    <!-- 警告类问题 -->
+                    <div class="mb-6">
+                        <h3 class="text-xl font-semibold text-gray-900 mb-3">警告</h3>
+                        <div class="space-y-3">
+                            <div class="issue warning bg-yellow-50 p-4 rounded-lg">
+                                <div class="flex items-center mb-2">
+                                    <svg class="w-5 h-5 text-yellow-400 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"/>
+                                    </svg>
+                                    <span class="font-medium">使用 v-for 指令时必须绑定 key 属性</span>
+                                </div>
+                                <p class="text-sm text-yellow-600">✓ 可自动修复</p>
+                            </div>
+                            <div class="issue warning bg-yellow-50 p-4 rounded-lg">
+                                <div class="flex items-center mb-2">
+                                    <svg class="w-5 h-5 text-yellow-400 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"/>
+                                    </svg>
+                                    <span class="font-medium">组件缺少 name 属性</span>
+                                </div>
+                                <p class="text-sm text-yellow-600">✓ 可自动修复</p>
+                            </div>
+                            <div class="issue warning bg-yellow-50 p-4 rounded-lg">
+                                <div class="flex items-center mb-2">
+                                    <svg class="w-5 h-5 text-yellow-400 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"/>
+                                    </svg>
+                                    <span class="font-medium">建议使用 scoped 样式以避免样式污染</span>
+                                </div>
+                                <p class="text-sm text-yellow-600">✓ 可自动修复</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- 样式问题 -->
+                    <div class="mb-6">
+                        <h3 class="text-xl font-semibold text-gray-900 mb-3">样式相关</h3>
+                        <div class="space-y-3">
+                            <div class="issue warning bg-yellow-50 p-4 rounded-lg">
+                                <div class="flex items-center mb-2">
+                                    <svg class="w-5 h-5 text-yellow-400 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"/>
+                                    </svg>
+                                    <span class="font-medium">第 5 行超过 80 个字符</span>
+                                </div>
+                                <p class="text-sm text-yellow-600">✓ 可自动修复</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 改进建议 -->
+                <div>
+                    <h2 class="text-2xl font-bold text-gray-900 mb-4">改进建议</h2>
+                    <div class="bg-blue-50 p-6 rounded-lg">
+                        <ul class="space-y-3 text-blue-800">
+                            <li class="flex items-start">
+                                <svg class="w-5 h-5 text-blue-500 mr-2 mt-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/>
+                                </svg>
+                                <span>为所有 v-for 指令添加唯一的 key 属性，这将提高列表渲染的性能</span>
+                            </li>
+                            <li class="flex items-start">
+                                <svg class="w-5 h-5 text-blue-500 mr-2 mt-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/>
+                                </svg>
+                                <span>添加组件 name 属性以便于调试和性能分析</span>
+                            </li>
+                            <li class="flex items-start">
+                                <svg class="w-5 h-5 text-blue-500 mr-2 mt-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/>
+                                </svg>
+                                <span>使用 scoped 样式或 CSS Modules 来避免全局样式污染</span>
+                            </li>
+                            <li class="flex items-start">
+                                <svg class="w-5 h-5 text-blue-500 mr-2 mt-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/>
+                                </svg>
+                                <span>将长行拆分为多行以提高代码可读性</span>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+</html> 

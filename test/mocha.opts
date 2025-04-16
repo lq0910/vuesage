@@ -1,0 +1,5 @@
+--require @babel/register
+--require chai/register-expect
+--recursive
+--timeout 5000
+--exit 

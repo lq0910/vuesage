@@ -1,6 +1,46 @@
-const fs = require('fs');
-const axios = require('axios');
-const chalk = require('chalk');
+import fs from 'fs';
+import axios from 'axios';
+import chalk from 'chalk';
+import { expect } from 'chai';
+import { describe, it } from 'mocha';
+
+describe('VueSage', () => {
+  describe('Component Analysis', () => {
+    it('should analyze a Vue component successfully', async () => {
+      const component = fs.readFileSync('./test/TestComponent.vue', 'utf8');
+      const response = await axios.post('http://localhost:3000/analyze', { component });
+      
+      expect(response.data).to.be.an('object');
+      expect(response.data.summary).to.be.an('object');
+      expect(response.data.issues).to.be.an('array');
+    });
+
+    it('should identify issues in the component', async () => {
+      const component = fs.readFileSync('./test/TestComponent.vue', 'utf8');
+      const response = await axios.post('http://localhost:3000/analyze', { component });
+      
+      expect(response.data.issues).to.not.be.empty;
+    });
+  });
+
+  describe('Component Fixing', () => {
+    it('should fix auto-fixable issues', async () => {
+      const component = fs.readFileSync('./test/TestComponent.vue', 'utf8');
+      const analysisResponse = await axios.post('http://localhost:3000/analyze', { component });
+      
+      if (analysisResponse.data.summary.hasAutoFixableIssues) {
+        const fixResponse = await axios.post('http://localhost:3000/fix', {
+          component,
+          issues: analysisResponse.data.issues.flatMap(category => category.issues)
+        });
+        
+        expect(fixResponse.data.fixedComponent).to.be.a('string');
+        expect(fixResponse.data.appliedFixes).to.be.an('array');
+        expect(fixResponse.data.appliedFixes).to.not.be.empty;
+      }
+    });
+  });
+});
 
 async function testComponent() {
   try {

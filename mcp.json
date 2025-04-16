@@ -1,9 +1,12 @@
 {
   "name": "vuesage",
-  "version": "1.0.0",
-  "description": "Vue组件智能分析与优化引擎",
+  "version": "1.1.6",
+  "description": "Vue 组件智能分析与优化引擎",
   "type": "service",
   "transport": "stdio",
+  "command": "vuesage",
+  "runtime": "node",
+  "global": true,
   "platforms": ["cursor", "vscode"],
   "capabilities": {
     "analyze": {
@@ -158,6 +161,27 @@
     "vuesage.fix": {
       "title": "VueSage: 修复问题",
       "description": "自动修复检测到的问题"
+    },
+    "analyze": {
+      "description": "分析 Vue 组件文件",
+      "run": "vuesage analyze"
+    },
+    "fix": {
+      "description": "修复 Vue 组件文件中的问题",
+      "run": "vuesage fix"
+    },
+    "watch": {
+      "description": "监听 Vue 文件变化",
+      "run": "vuesage watch"
     }
+  },
+  "triggers": {
+    "onSave": {
+      "files": ["**/*.vue"],
+      "run": "vuesage analyze"
+    }
+  },
+  "settings": {
+    "configFile": ".vuesagerc.json"
   }
 } 

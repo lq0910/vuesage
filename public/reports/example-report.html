@@ -1,0 +1,131 @@
+
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <title>VueSage 代码质量报告</title>
+  <style>
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+      line-height: 1.6;
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 20px;
+      background: #f5f5f5;
+    }
+    .container {
+      background: white;
+      padding: 30px;
+      border-radius: 8px;
+      box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+    }
+    .header {
+      margin-bottom: 30px;
+      padding-bottom: 20px;
+      border-bottom: 1px solid #eee;
+    }
+    .summary {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      gap: 20px;
+      margin-bottom: 30px;
+    }
+    .summary-item {
+      padding: 15px;
+      border-radius: 6px;
+      background: #f8f9fa;
+    }
+    .issues {
+      margin-bottom: 30px;
+    }
+    .issue-category {
+      margin-bottom: 20px;
+    }
+    .issue {
+      padding: 10px;
+      margin: 5px 0;
+      border-left: 4px solid;
+      background: #f8f9fa;
+    }
+    .issue.error { border-color: #dc3545; }
+    .issue.warning { border-color: #ffc107; }
+    .issue.info { border-color: #0dcaf0; }
+    .recommendations {
+      background: #e9ecef;
+      padding: 20px;
+      border-radius: 6px;
+    }
+    .timestamp {
+      color: #6c757d;
+      font-size: 0.9em;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <div class="header">
+      <h1>VueSage 代码质量报告</h1>
+      <p class="timestamp">生成时间: 2025-04-15T14:01:46.540Z</p>
+    </div>
+
+    <div class="summary">
+      <div class="summary-item">
+        <h3>总问题数</h3>
+        <p>4</p>
+      </div>
+      <div class="summary-item">
+        <h3>问题类别数</h3>
+        <p>2</p>
+      </div>
+      <div class="summary-item">
+        <h3>可修复问题数</h3>
+        <p>4</p>
+      </div>
+      <div class="summary-item">
+        <h3>代码质量评分</h3>
+        <p>90/100</p>
+      </div>
+    </div>
+
+    <div class="issues">
+      <h2>问题详情</h2>
+      
+        <div class="issue-category">
+          <h3>警告</h3>
+          
+            <div class="issue warning">
+              <p>使用 v-for 指令时必须绑定 key 属性</p>
+              <small>✓ 可自动修复</small>
+            </div>
+          
+            <div class="issue warning">
+              <p>组件缺少 name 属性</p>
+              <small>✓ 可自动修复</small>
+            </div>
+          
+            <div class="issue warning">
+              <p>建议使用 scoped 样式以避免样式污染</p>
+              <small>✓ 可自动修复</small>
+            </div>
+          
+        </div>
+      
+        <div class="issue-category">
+          <h3>样式相关</h3>
+          
+            <div class="issue warning">
+              <p>第 5 行超过 80 个字符</p>
+              <small>✓ 可自动修复</small>
+            </div>
+          
+        </div>
+      
+    </div>
+
+    <div class="recommendations">
+      <h2>改进建议</h2>
+      
+    </div>
+  </div>
+</body>
+</html>

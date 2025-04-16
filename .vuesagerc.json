@@ -1,0 +1,69 @@
+{
+  "rules": {
+    "template": {
+      "maxLength": 80,
+      "requireKey": true,
+      "maxNestingDepth": 3,
+      "requireAlt": true,
+      "requireAriaLabel": true
+    },
+    "script": {
+      "requireName": true,
+      "requirePropsType": true,
+      "requirePropsDefault": true,
+      "maxMethodLines": 20,
+      "maxMethods": 10,
+      "enforceEmits": true,
+      "preferOptionsApi": false
+    },
+    "style": {
+      "enforceScoped": true,
+      "maxNestingDepth": 3,
+      "enforceClassNaming": true,
+      "preferRem": true
+    },
+    "performance": {
+      "checkComputedComplexity": true,
+      "checkWatcherDeps": true,
+      "checkVNodeReuse": true
+    },
+    "accessibility": {
+      "enforceAria": true,
+      "checkContrast": true,
+      "requireFocusable": true
+    },
+    "bestPractices": {
+      "enforceVuex": true,
+      "checkPropsMutations": true,
+      "enforceTypeScript": false
+    }
+  },
+  "fix": {
+    "safe": true,
+    "backup": true,
+    "ignoreFiles": [
+      "dist/**/*",
+      "node_modules/**/*",
+      "**/*.min.js",
+      "**/*.min.css"
+    ],
+    "formatOptions": {
+      "semi": true,
+      "singleQuote": true,
+      "trailingComma": "es5",
+      "bracketSpacing": true,
+      "arrowParens": "avoid"
+    }
+  },
+  "watch": {
+    "enabled": false,
+    "include": ["src/**/*.vue"],
+    "exclude": ["node_modules", "dist"],
+    "autoFix": false
+  },
+  "report": {
+    "output": "vuesage-report.json",
+    "format": "json",
+    "includeSource": false
+  }
+} 

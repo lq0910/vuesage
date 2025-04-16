@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>VueSage - Vue组件智能分析与优化引擎</title>
+    <title>VueSage - Vue 智能代码分析与优化引擎</title>
     <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
     <link href="https://cdn.jsdelivr.net/npm/monaco-editor@0.33.0/min/vs/editor/editor.main.css" rel="stylesheet">
     <style>
@@ -22,6 +22,49 @@
             -webkit-backdrop-filter: blur(12px);
             border-bottom: 1px solid rgba(229, 231, 235, 0.5);
         }
+        .chat-container {
+            background: linear-gradient(180deg, #f8fafc 0%, #f1f5f9 100%);
+            border: 1px solid #e2e8f0;
+        }
+        .chat-message {
+            max-width: 85%;
+            animation: fadeIn 0.3s ease-in-out;
+        }
+        .chat-user {
+            background: linear-gradient(135deg, #3b82f6 0%, #2563eb 100%);
+        }
+        .chat-ai {
+            background: linear-gradient(135deg, #f3f4f6 0%, #e5e7eb 100%);
+            border: 1px solid #d1d5db;
+        }
+        .code-block {
+            background: #1e293b;
+            border-radius: 8px;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+        }
+        .code-block pre {
+            margin: 0;
+            padding: 1rem;
+        }
+        .code-header {
+            border-bottom: 1px solid #334155;
+            padding: 0.5rem 1rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            color: #94a3b8;
+        }
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        .feature-card {
+            transition: all 0.3s ease;
+        }
+        .feature-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
+        }
     </style>
 </head>
 <body class="bg-gray-50">
@@ -36,16 +79,22 @@
                         <a href="#features" class="border-transparent text-gray-900 inline-flex items-center px-1 pt-1 border-b-2 text-sm font-medium hover:border-indigo-500">
                             功能特点
                         </a>
-                        <a href="#demo" class="border-transparent text-gray-900 inline-flex items-center px-1 pt-1 border-b-2 text-sm font-medium hover:border-indigo-500">
-                            在线体验
+                        <a href="docs/guide/getting-started.html" class="border-transparent text-gray-900 inline-flex items-center px-1 pt-1 border-b-2 text-sm font-medium hover:border-indigo-500">
+                            快速开始
                         </a>
-                        <a href="docs/index.html" class="border-transparent text-gray-900 inline-flex items-center px-1 pt-1 border-b-2 text-sm font-medium hover:border-indigo-500">
-                            文档
+                        <a href="docs/guide/best-practices.html" class="border-transparent text-gray-900 inline-flex items-center px-1 pt-1 border-b-2 text-sm font-medium hover:border-indigo-500">
+                            最佳实践
+                        </a>
+                        <a href="docs/API.html" class="border-transparent text-gray-900 inline-flex items-center px-1 pt-1 border-b-2 text-sm font-medium hover:border-indigo-500">
+                            API
                         </a>
                     </div>
                 </div>
                 <div class="flex items-center">
                     <a href="https://github.com/lq0910/vuesage" target="_blank" class="inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md text-white bg-indigo-600 hover:bg-indigo-700">
+                        <svg class="w-5 h-5 mr-2" fill="currentColor" viewBox="0 0 24 24">
+                            <path fill-rule="evenodd" d="M12 2C6.477 2 2 6.484 2 12.017c0 4.425 2.865 8.18 6.839 9.504.5.092.682-.217.682-.483 0-.237-.008-.868-.013-1.703-2.782.605-3.369-1.343-3.369-1.343-.454-1.158-1.11-1.466-1.11-1.466-.908-.62.069-.608.069-.608 1.003.07 1.531 1.032 1.531 1.032.892 1.53 2.341 1.088 2.91.832.092-.647.35-1.088.636-1.338-2.22-.253-4.555-1.113-4.555-4.951 0-1.093.39-1.988 1.029-2.688-.103-.253-.446-1.272.098-2.65 0 0 .84-.27 2.75 1.026A9.564 9.564 0 0112 6.844c.85.004 1.705.115 2.504.337 1.909-1.296 2.747-1.027 2.747-1.027.546 1.379.202 2.398.1 2.651.64.7 1.028 1.595 1.028 2.688 0 3.848-2.339 4.695-4.566 4.943.359.309.678.92.678 1.855 0 1.338-.012 2.419-.012 2.747 0 .268.18.58.688.482A10.019 10.019 0 0022 12.017C22 6.484 17.522 2 12 2z" clip-rule="evenodd"/>
+                        </svg>
                         GitHub
                     </a>
                 </div>
@@ -53,196 +102,325 @@
         </div>
     </nav>
 
-    <!-- Hero Section -->
-    <section class="pt-20 pb-16 hero-gradient">
-        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-16">
-            <div class="text-center">
-                <h1 class="text-4xl tracking-tight font-extrabold text-gray-900 sm:text-5xl md:text-6xl">
-                    <span class="block">Vue组件智能分析</span>
-                    <span class="block gradient-text mt-3">代码质量守护者</span>
-                </h1>
-                <p class="mt-3 max-w-md mx-auto text-base text-gray-500 sm:text-lg md:mt-5 md:text-xl md:max-w-3xl">
-                    基于AI的Vue组件分析工具，自动检测代码问题，提供智能修复方案，帮助你编写更好的Vue组件。
-                </p>
-                <div class="mt-5 max-w-md mx-auto sm:flex sm:justify-center md:mt-8">
-                    <div class="rounded-md shadow">
-                        <a href="#demo" class="w-full flex items-center justify-center px-8 py-3 border border-transparent text-base font-medium rounded-md text-white bg-indigo-600 hover:bg-indigo-700 md:py-4 md:text-lg md:px-10">
-                            立即体验
-                        </a>
-                    </div>
-                    <div class="mt-3 rounded-md shadow sm:mt-0 sm:ml-3">
-                        <a href="docs/index.html" class="w-full flex items-center justify-center px-8 py-3 border border-transparent text-base font-medium rounded-md text-indigo-600 bg-white hover:bg-gray-50 md:py-4 md:text-lg md:px-10">
-                            查看文档
-                        </a>
-                    </div>
+    <!-- 添加顶部间距，防止内容被导航栏遮挡 -->
+    <div class="pt-16">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
+            <!-- 头部区域 -->
+            <div class="text-center mb-16">
+                <h1 class="text-4xl font-bold text-gray-900 mb-4">VueSage</h1>
+                <p class="text-xl text-gray-600 mb-8">基于 MCP (Model-Code-Prompt) 的 Vue 智能代码分析与优化引擎</p>
+                <div class="flex justify-center space-x-4">
+                    <a href="#quick-start" class="bg-blue-600 text-white px-6 py-2 rounded-lg hover:bg-blue-700 transition-colors">快速开始</a>
+                    <a href="https://github.com/lq0910/vuesage" class="bg-gray-800 text-white px-6 py-2 rounded-lg hover:bg-gray-900 transition-colors">GitHub</a>
                 </div>
             </div>
-        </div>
-    </section>
 
-    <!-- Features Section -->
-    <section id="features" class="py-16 bg-white">
-        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div class="lg:text-center">
-                <h2 class="text-3xl font-extrabold tracking-tight text-gray-900 sm:text-4xl">
-                    强大的功能特性
-                </h2>
-                <p class="mt-4 max-w-2xl text-xl text-gray-500 lg:mx-auto">
-                    为Vue开发者打造的智能工具集，让代码质量管理变得简单高效。
-                </p>
-            </div>
-
-            <div class="mt-16">
-                <div class="grid grid-cols-1 gap-8 md:grid-cols-2 lg:grid-cols-3">
-                    <!-- Feature 1 -->
-                    <div class="bg-gray-50 rounded-lg p-6 hover:shadow-lg transition duration-300">
-                        <div class="text-indigo-600 text-3xl mb-4">🔍</div>
-                        <h3 class="text-lg font-medium text-gray-900">智能代码分析</h3>
-                        <p class="mt-2 text-gray-500">
-                            自动检测命名规范、Props验证、生命周期使用等潜在问题，提供详细的分析报告。
+            <!-- 功能特点 -->
+            <div id="features" class="py-12 bg-white">
+                <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+                    <div class="lg:text-center">
+                        <h2 class="text-base text-indigo-600 font-semibold tracking-wide uppercase">功能特点</h2>
+                        <p class="mt-2 text-3xl leading-8 font-extrabold tracking-tight text-gray-900 sm:text-4xl">
+                            智能的 Vue 代码质量分析工具
                         </p>
                     </div>
 
-                    <!-- Feature 2 -->
-                    <div class="bg-gray-50 rounded-lg p-6 hover:shadow-lg transition duration-300">
-                        <div class="text-indigo-600 text-3xl mb-4">🛠</div>
-                        <h3 class="text-lg font-medium text-gray-900">自动问题修复</h3>
-                        <p class="mt-2 text-gray-500">
-                            一键修复检测到的问题，智能优化代码结构，提高代码质量。
-                        </p>
-                    </div>
+                    <div class="mt-10">
+                        <div class="space-y-10 md:space-y-0 md:grid md:grid-cols-2 md:gap-x-8 md:gap-y-10">
+                            <!-- 代码质量报告 -->
+                            <div class="relative">
+                                <div class="absolute flex items-center justify-center h-12 w-12 rounded-md bg-indigo-500 text-white">
+                                    <svg class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
+                                    </svg>
+                                </div>
+                                <div class="ml-16">
+                                    <h3 class="text-lg leading-6 font-medium text-gray-900">
+                                        详细的质量报告
+                                    </h3>
+                                    <p class="mt-2 text-base text-gray-500">
+                                        生成全面的代码质量分析报告，包括性能指标、最佳实践建议和改进方案。
+                                        <a href="docs/reports/example-report.html" class="text-indigo-600 hover:text-indigo-500">
+                                            查看示例报告 →
+                                        </a>
+                                    </p>
+                                </div>
+                            </div>
 
-                    <!-- Feature 3 -->
-                    <div class="bg-gray-50 rounded-lg p-6 hover:shadow-lg transition duration-300">
-                        <div class="text-indigo-600 text-3xl mb-4">⚡️</div>
-                        <h3 class="text-lg font-medium text-gray-900">性能优化建议</h3>
-                        <p class="mt-2 text-gray-500">
-                            分析组件性能瓶颈，提供优化建议，提升应用运行效率。
-                        </p>
-                    </div>
+                            <!-- 自动修复功能 -->
+                            <div class="relative">
+                                <div class="absolute flex items-center justify-center h-12 w-12 rounded-md bg-indigo-500 text-white">
+                                    <svg class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 20l4-16m4 4l4 4-4 4M6 16l-4-4 4-4" />
+                                    </svg>
+                                </div>
+                                <div class="ml-16">
+                                    <h3 class="text-lg leading-6 font-medium text-gray-900">
+                                        智能代码修复
+                                    </h3>
+                                    <p class="mt-2 text-base text-gray-500">
+                                        自动检测并修复常见的代码问题，提供可执行的优化建议。
+                                        <a href="docs/guide/auto-fix.html" class="text-indigo-600 hover:text-indigo-500">
+                                            了解更多 →
+                                        </a>
+                                    </p>
+                                </div>
+                            </div>
 
-                    <!-- Feature 4 -->
-                    <div class="bg-gray-50 rounded-lg p-6 hover:shadow-lg transition duration-300">
-                        <div class="text-indigo-600 text-3xl mb-4">📚</div>
-                        <h3 class="text-lg font-medium text-gray-900">最佳实践指南</h3>
-                        <p class="mt-2 text-gray-500">
-                            基于Vue.js官方推荐的最佳实践，帮助团队保持一致的代码风格。
-                        </p>
-                    </div>
+                            <!-- Vue 3 支持 -->
+                            <div class="relative">
+                                <div class="absolute flex items-center justify-center h-12 w-12 rounded-md bg-indigo-500 text-white">
+                                    <svg class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z" />
+                                    </svg>
+                                </div>
+                                <div class="ml-16">
+                                    <h3 class="text-lg leading-6 font-medium text-gray-900">
+                                        Vue 3 完整支持
+                                    </h3>
+                                    <p class="mt-2 text-base text-gray-500">
+                                        全面支持 Vue 3 Composition API，提供针对性的代码优化建议。
+                                        <a href="docs/guide/vue3-support.html" class="text-indigo-600 hover:text-indigo-500">
+                                            查看详情 →
+                                        </a>
+                                    </p>
+                                </div>
+                            </div>
 
-                    <!-- Feature 5 -->
-                    <div class="bg-gray-50 rounded-lg p-6 hover:shadow-lg transition duration-300">
-                        <div class="text-indigo-600 text-3xl mb-4">🔌</div>
-                        <h3 class="text-lg font-medium text-gray-900">IDE集成支持</h3>
-                        <p class="mt-2 text-gray-500">
-                            支持VSCode和Cursor编辑器，提供无缝的开发体验。
-                        </p>
-                    </div>
-
-                    <!-- Feature 6 -->
-                    <div class="bg-gray-50 rounded-lg p-6 hover:shadow-lg transition duration-300">
-                        <div class="text-indigo-600 text-3xl mb-4">⚙️</div>
-                        <h3 class="text-lg font-medium text-gray-900">灵活配置选项</h3>
-                        <p class="mt-2 text-gray-500">
-                            提供丰富的配置选项，满足不同团队的个性化需求。
-                        </p>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <!-- Demo Section -->
-    <section id="demo" class="py-16 bg-gray-50">
-        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div class="lg:text-center mb-12">
-                <h2 class="text-3xl font-extrabold tracking-tight text-gray-900 sm:text-4xl">
-                    在线体验
-                </h2>
-                <p class="mt-4 max-w-2xl text-xl text-gray-500 lg:mx-auto">
-                    粘贴你的Vue组件代码，立即体验智能分析功能。
-                </p>
-            </div>
-
-            <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
-                <!-- Code Input -->
-                <div class="bg-white rounded-lg shadow-lg p-6">
-                    <h3 class="text-lg font-medium text-gray-900 mb-4">组件代码</h3>
-                    <div id="editor" class="h-96 border rounded"></div>
-                    <div class="mt-4 flex justify-between">
-                        <button id="analyzeBtn" class="bg-indigo-600 text-white px-6 py-2 rounded hover:bg-indigo-700 transition duration-300">
-                            分析组件
-                        </button>
-                        <button id="fixBtn" class="bg-green-600 text-white px-6 py-2 rounded hover:bg-green-700 transition duration-300" disabled>
-                            修复问题
-                        </button>
-                    </div>
-                </div>
-
-                <!-- Analysis Results -->
-                <div class="bg-white rounded-lg shadow-lg p-6">
-                    <h3 class="text-lg font-medium text-gray-900 mb-4">分析结果</h3>
-                    <div id="results" class="h-96 overflow-y-auto">
-                        <div class="text-gray-500 text-center mt-32">
-                            在左侧输入Vue组件代码并点击"分析组件"开始分析
+                            <!-- Cursor 集成 -->
+                            <div class="relative">
+                                <div class="absolute flex items-center justify-center h-12 w-12 rounded-md bg-indigo-500 text-white">
+                                    <svg class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9.75 17L9 20l-1 1h8l-1-1-.75-3M3 13h18M5 17h14a2 2 0 002-2V5a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" />
+                                    </svg>
+                                </div>
+                                <div class="ml-16">
+                                    <h3 class="text-lg leading-6 font-medium text-gray-900">
+                                        Cursor 编辑器集成
+                                    </h3>
+                                    <p class="mt-2 text-base text-gray-500">
+                                        与 Cursor 编辑器无缝集成，提供实时代码分析和优化建议。
+                                        <a href="docs/guide/cursor-integration.html" class="text-indigo-600 hover:text-indigo-500">
+                                            配置指南 →
+                                        </a>
+                                    </p>
+                                </div>
+                            </div>
                         </div>
                     </div>
                 </div>
             </div>
-        </div>
-    </section>
 
-    <!-- Integration Section -->
-    <section class="py-16 bg-white">
-        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div class="lg:text-center">
-                <h2 class="text-3xl font-extrabold tracking-tight text-gray-900 sm:text-4xl">
-                    开始使用
-                </h2>
-                <p class="mt-4 max-w-2xl text-xl text-gray-500 lg:mx-auto">
-                    选择你喜欢的方式集成VueSage
-                </p>
-            </div>
-
-            <div class="mt-16 grid grid-cols-1 gap-8 md:grid-cols-2">
-                <!-- VSCode Extension -->
-                <div class="bg-gray-50 rounded-lg p-8 hover:shadow-lg transition duration-300">
-                    <h3 class="text-xl font-bold text-gray-900 mb-4">VSCode 扩展</h3>
-                    <p class="text-gray-500 mb-4">
-                        在VSCode中直接使用VueSage，获得实时代码分析和修复建议。
-                    </p>
-                    <pre class="bg-gray-800 text-gray-100 p-4 rounded"><code>ext install vuesage</code></pre>
+            <!-- MCP 配置示例 -->
+            <div class="mb-16">
+                <h2 class="text-2xl font-semibold text-gray-900 mb-6">MCP 配置示例</h2>
+                <div class="bg-gray-900 rounded-lg overflow-hidden">
+                    <div class="flex items-center justify-between px-4 py-2 bg-gray-800 border-b border-gray-700">
+                        <span class="text-gray-400">mcp.json</span>
+                        <button class="text-sm text-gray-400 hover:text-white transition-colors px-2 py-1 rounded">复制代码</button>
+                    </div>
+                    <div class="p-6 overflow-x-auto">
+                        <pre class="text-green-400 whitespace-pre"><code>{
+  "name": "vuesage",
+  "version": "1.1.6",
+  "description": "Vue 组件智能分析与优化引擎",
+  "type": "service",
+  "transport": "stdio",
+  "command": "vuesage",
+  "runtime": "node",
+  "global": true,
+  "platforms": ["cursor", "vscode"],
+  "capabilities": {
+    "analyze": {
+      "description": "分析 Vue 组件代码质量",
+      "input": {
+        "type": "object",
+        "properties": {
+          "component": {
+            "type": "string",
+            "description": "Vue 组件代码"
+          }
+        }
+      }
+    }
+  }
+}</code></pre>
+                    </div>
                 </div>
+            </div>
 
-                <!-- Cursor Extension -->
-                <div class="bg-gray-50 rounded-lg p-8 hover:shadow-lg transition duration-300">
-                    <h3 class="text-xl font-bold text-gray-900 mb-4">Cursor 扩展</h3>
-                    <p class="text-gray-500 mb-4">
-                        在Cursor编辑器中使用VueSage，享受AI驱动的代码分析体验。
-                    </p>
-                    <pre class="bg-gray-800 text-gray-100 p-4 rounded"><code>cursor install vuesage</code></pre>
+            <!-- AI 对话示例 -->
+            <div class="mb-16">
+                <h2 class="text-2xl font-semibold text-gray-900 mb-6">AI 对话式代码优化</h2>
+                <div class="chat-container rounded-xl p-6 max-w-4xl mx-auto">
+                    <div class="space-y-6">
+                        <div class="flex justify-start">
+                            <div class="chat-message chat-user text-white p-4 rounded-2xl rounded-tl-none">
+                                <p>检查这个组件的性能问题</p>
+                            </div>
+                        </div>
+                        <div class="flex justify-end">
+                            <div class="chat-message chat-ai p-4 rounded-2xl rounded-tr-none">
+                                <div class="flex items-start space-x-3">
+                                    <div class="flex-shrink-0">
+                                        <span class="text-2xl">🧙‍♂️</span>
+                                    </div>
+                                    <div class="flex-grow">
+                                        <p class="text-gray-800 font-medium mb-2">我发现了以下性能优化机会：</p>
+                                        <ul class="space-y-2 text-gray-600 mb-4">
+                                            <li class="flex items-start">
+                                                <span class="text-red-500 mr-2">•</span>
+                                                计算属性中存在复杂的数组操作，建议使用缓存
+                                            </li>
+                                            <li class="flex items-start">
+                                                <span class="text-yellow-500 mr-2">•</span>
+                                                检测到 6 个 watch 监听器，可能影响性能
+                                            </li>
+                                            <li class="flex items-start">
+                                                <span class="text-blue-500 mr-2">•</span>
+                                                v-if 和 v-show 混用过多，建议统一使用方式
+                                            </li>
+                                        </ul>
+                                        <p class="text-gray-800">需要我帮你修复这些问题吗？</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="flex justify-start">
+                            <div class="chat-message chat-user text-white p-4 rounded-2xl rounded-tl-none">
+                                <p>是的，请帮我优化</p>
+                            </div>
+                        </div>
+                        <div class="flex justify-end">
+                            <div class="chat-message chat-ai p-4 rounded-2xl rounded-tr-none">
+                                <div class="flex items-start space-x-3">
+                                    <div class="flex-shrink-0">
+                                        <span class="text-2xl">🧙‍♂️</span>
+                                    </div>
+                                    <div class="flex-grow">
+                                        <p class="text-gray-800 font-medium mb-4">好的，我来帮你优化代码：</p>
+                                        <div class="code-block mb-4">
+                                            <div class="code-header">
+                                                <span>优化示例</span>
+                                                <button class="text-sm hover:text-white transition-colors">复制代码</button>
+                                            </div>
+                                            <pre class="text-green-400"><code>// 优化前
+computed: {
+  filteredItems() {
+    return this.items
+      .filter(item => item.active)
+      .map(item => item.value)
+      .reduce((acc, val) => acc + val, 0)
+  }
+}
+
+// 优化后
+computed: {
+  activeItems() {
+    return this.items.filter(item => item.active)
+  },
+  filteredItems() {
+    return this.activeItems
+      .map(item => item.value)
+      .reduce((acc, val) => acc + val, 0)
+  }
+}</code></pre>
+                                        </div>
+                                        <p class="text-gray-800 font-medium mb-2">我已经完成以下优化：</p>
+                                        <ul class="space-y-2">
+                                            <li class="flex items-center text-green-600">
+                                                <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/>
+                                                </svg>
+                                                拆分计算属性，避免重复计算
+                                            </li>
+                                            <li class="flex items-center text-green-600">
+                                                <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/>
+                                                </svg>
+                                                合并了重复的 watch 监听器
+                                            </li>
+                                            <li class="flex items-center text-green-600">
+                                                <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/>
+                                                </svg>
+                                                统一使用 v-show 优化条件渲染
+                                            </li>
+                                        </ul>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
                 </div>
             </div>
-        </div>
-    </section>
 
-    <footer class="bg-white border-t border-gray-200">
-        <div class="max-w-7xl mx-auto py-12 px-4 sm:px-6 md:flex md:items-center md:justify-between lg:px-8">
-            <div class="flex justify-center space-x-6 md:order-2">
-                <a href="https://github.com/lq0910/vuesage" class="text-gray-400 hover:text-gray-500">
-                    <span class="sr-only">GitHub</span>
-                    <svg class="h-6 w-6" fill="currentColor" viewBox="0 0 24 24">
-                        <path fill-rule="evenodd" d="M12 2C6.477 2 2 6.484 2 12.017c0 4.425 2.865 8.18 6.839 9.504.5.092.682-.217.682-.483 0-.237-.008-.868-.013-1.703-2.782.605-3.369-1.343-3.369-1.343-.454-1.158-1.11-1.466-1.11-1.466-.908-.62.069-.608.069-.608 1.003.07 1.531 1.032 1.531 1.032.892 1.53 2.341 1.088 2.91.832.092-.647.35-1.088.636-1.338-2.22-.253-4.555-1.113-4.555-4.951 0-1.093.39-1.988 1.029-2.688-.103-.253-.446-1.272.098-2.65 0 0 .84-.27 2.75 1.026A9.564 9.564 0 0112 6.844c.85.004 1.705.115 2.504.337 1.909-1.296 2.747-1.027 2.747-1.027.546 1.379.202 2.398.1 2.651.64.7 1.028 1.595 1.028 2.688 0 3.848-2.339 4.695-4.566 4.943.359.309.678.92.678 1.855 0 1.338-.012 2.419-.012 2.747 0 .268.18.58.688.482A10.019 10.019 0 0022 12.017C22 6.484 17.522 2 12 2z" clip-rule="evenodd" />
-                    </svg>
-                </a>
+            <!-- 快速开始 -->
+            <div id="quick-start" class="mb-16">
+                <h2 class="text-2xl font-semibold text-gray-900 mb-6">快速开始</h2>
+                <div class="bg-white rounded-lg shadow-md p-6">
+                    <div class="space-y-6">
+                        <div>
+                            <h3 class="text-lg font-medium text-gray-900 mb-2">1. 安装</h3>
+                            <pre class="bg-gray-800 p-4 rounded text-green-400"><code>npm install -g vuesage</code></pre>
+                        </div>
+                        <div>
+                            <h3 class="text-lg font-medium text-gray-900 mb-2">2. 在 Cursor 中配置</h3>
+                            <pre class="bg-gray-800 p-4 rounded text-green-400"><code>cursor extension install vuesage</code></pre>
+                        </div>
+                        <div>
+                            <h3 class="text-lg font-medium text-gray-900 mb-2">3. 开始使用</h3>
+                            <p class="text-gray-600 mb-2">在 Cursor 中打开 Vue 文件，使用以下命令：</p>
+                            <ul class="space-y-2 text-gray-600">
+                                <li>• /analyze - 分析当前文件</li>
+                                <li>• /fix - 修复检测到的问题</li>
+                                <li>• /chat - 开始 AI 对话</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
             </div>
-            <div class="mt-8 md:mt-0 md:order-1">
-                <p class="text-center text-base text-gray-400">
-                    &copy; 2025 VueSage. All rights reserved.
-                </p>
+
+            <!-- 功能列表 -->
+            <div class="grid md:grid-cols-3 gap-8 mb-16">
+                <div class="bg-white p-6 rounded-lg shadow-md">
+                    <h3 class="text-lg font-semibold text-gray-900 mb-4">代码分析</h3>
+                    <ul class="space-y-2 text-gray-600">
+                        <li>• Vue 2/3 语法支持</li>
+                        <li>• Composition API 分析</li>
+                        <li>• 性能问题检测</li>
+                        <li>• 安全漏洞扫描</li>
+                        <li>• 代码质量评估</li>
+                    </ul>
+                </div>
+                <div class="bg-white p-6 rounded-lg shadow-md">
+                    <h3 class="text-lg font-semibold text-gray-900 mb-4">智能修复</h3>
+                    <ul class="space-y-2 text-gray-600">
+                        <li>• 自动代码重构</li>
+                        <li>• 性能优化建议</li>
+                        <li>• 最佳实践应用</li>
+                        <li>• 批量问题修复</li>
+                        <li>• 代码格式化</li>
+                    </ul>
+                </div>
+                <div class="bg-white p-6 rounded-lg shadow-md">
+                    <h3 class="text-lg font-semibold text-gray-900 mb-4">开发体验</h3>
+                    <ul class="space-y-2 text-gray-600">
+                        <li>• AI 对话交互</li>
+                        <li>• 实时分析反馈</li>
+                        <li>• 自定义规则配置</li>
+                        <li>• 团队协作支持</li>
+                        <li>• CI/CD 集成</li>
+                    </ul>
+                </div>
             </div>
+
+            <!-- 底部 -->
+            <footer class="text-center text-gray-600">
+                <p>MIT License | Copyright © 2024 VueSage</p>
+            </footer>
         </div>
-    </footer>
+    </div>
 
     <script src="https://cdn.jsdelivr.net/npm/monaco-editor@0.33.0/min/vs/loader.js"></script>
     <script>
@@ -363,6 +541,28 @@
                     </div>
                 `;
             }
+        });
+
+        // 添加平滑滚动
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                document.querySelector(this.getAttribute('href')).scrollIntoView({
+                    behavior: 'smooth'
+                });
+            });
+        });
+
+        // 添加代码复制功能
+        document.querySelectorAll('.code-header button').forEach(button => {
+            button.addEventListener('click', () => {
+                const codeBlock = button.closest('.code-block').querySelector('code');
+                navigator.clipboard.writeText(codeBlock.textContent);
+                button.textContent = '已复制！';
+                setTimeout(() => {
+                    button.textContent = '复制代码';
+                }, 2000);
+            });
         });
     </script>
 </body>
