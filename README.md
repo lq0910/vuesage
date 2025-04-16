@@ -46,29 +46,20 @@ npm install vuesage
 
 #### 配置 MCP
 
-在全局 MCP 配置文件中添加：
+在 MCP 配置文件中添加：
 ```json
 {
-  "services": {
+  "mcpServers": {
     "vuesage": {
-      "name": "vuesage",
-      "type": "service",
-      "transport": "stdio",
-      "command": "vuesage",
-      "runtime": "node",
-      "global": true,
-      "capabilities": {
-        "analyze": {
-          "description": "分析Vue组件代码质量"
-        },
-        "fix": {
-          "description": "修复代码问题"
-        }
-      }
+      "command": "npx",
+      "args": ["vuesage@1.1.7"],
+      "enabled": true
     }
   }
 }
 ```
+
+> 注意：当前支持的最新版本为 1.1.7
 
 ### 2. 作为 Node.js 模块使用
 
