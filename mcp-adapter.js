@@ -13,6 +13,7 @@ class VueSageMCPService {
     this.serverInfo = {
       name: 'vuesage',
       version: '1.1.35',
+      vendor: 'VueSage',
       status: 'ready',
       protocolVersion: '0.2.0'
     };
@@ -36,53 +37,58 @@ class VueSageMCPService {
   // 获取服务能力
   getCapabilities() {
     return {
-      analyze: {
-        description: '分析 Vue 组件代码质量',
-        parameters: {
-          type: 'object',
-          properties: {
-            component: {
-              type: 'string',
-              description: 'Vue组件代码'
-            }
-          },
-          required: ['component']
-        }
-      },
-      generateUI: {
-        description: '生成 UI 组件建议',
-        parameters: {
-          type: 'object',
-          properties: {
-            type: {
-              type: 'string',
-              description: '组件类型'
+      tools: [
+        {
+          name: 'analyze',
+          description: '分析 Vue 组件代码质量',
+          inputSchema: {
+            type: 'object',
+            properties: {
+              component: {
+                type: 'string',
+                description: 'Vue组件代码'
+              }
             },
-            description: {
-              type: 'string',
-              description: '组件描述'
-            }
-          },
-          required: ['type', 'description']
-        }
-      },
-      search21st: {
-        description: '搜索 21st 组件库',
-        parameters: {
-          type: 'object',
-          properties: {
-            query: {
-              type: 'string',
-              description: '搜索关键词'
+            required: ['component']
+          }
+        },
+        {
+          name: 'generateUI',
+          description: '生成 UI 组件建议',
+          inputSchema: {
+            type: 'object',
+            properties: {
+              type: {
+                type: 'string',
+                description: '组件类型'
+              },
+              description: {
+                type: 'string',
+                description: '组件描述'
+              }
             },
-            category: {
-              type: 'string',
-              description: '组件类别'
-            }
-          },
-          required: ['query']
+            required: ['type', 'description']
+          }
+        },
+        {
+          name: 'search21st',
+          description: '搜索 21st 组件库',
+          inputSchema: {
+            type: 'object',
+            properties: {
+              query: {
+                type: 'string',
+                description: '搜索关键词'
+              },
+              category: {
+                type: 'string',
+                description: '组件类别'
+              }
+            },
+            required: ['query']
+          }
         }
-      }
+      ]
     };
   }
 

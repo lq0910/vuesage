@@ -74,6 +74,13 @@
     "indentSize": 2,
     "maxLineLength": 100,
     "singleQuote": true
+  },
+  "mcpServers": {
+    "vuesage": {
+      "command": "vuesage-mcp",
+      "version": "1.1.44",
+      "enabled": true
+    }
   }
 }</code></pre>
                     </div>
@@ -162,6 +169,44 @@
                                     <li><strong>singleQuote</strong>: 使用单引号</li>
                                     <li><strong>semi</strong>: 是否使用分号</li>
                                     <li><strong>trailingComma</strong>: 尾随逗号设置</li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+                <section class="mb-12">
+                    <h3 class="text-xl font-semibold text-gray-900 mb-4">MCP服务配置</h3>
+                    <div class="bg-white p-6 rounded-lg shadow">
+                        <div class="space-y-4">
+                            <p class="text-gray-600">VueSage MCP服务配置说明。</p>
+                            <div class="bg-gray-50 p-4 rounded">
+                                <h5 class="font-medium text-gray-900 mb-2">配置示例：</h5>
+                                <pre class="bg-gray-100 p-4 rounded"><code>{
+  "mcpConfig": {
+    "tools": [
+      {
+        "name": "analyze",
+        "description": "分析Vue组件代码质量",
+        "parameters": {
+          "type": "object",
+          "properties": {
+            "component": {
+              "type": "string",
+              "description": "Vue组件代码"
+            }
+          },
+          "required": ["component"]
+        }
+      }
+    ]
+  }
+}</code></pre>
+                                <h5 class="font-medium text-gray-900 mt-4 mb-2">使用说明：</h5>
+                                <ul class="list-disc pl-5 space-y-2 text-gray-600">
+                                    <li><strong>analyze工具</strong>: 用于分析Vue组件的代码质量</li>
+                                    <li><strong>返回结果</strong>: 包含分数、问题数量和详细建议</li>
+                                    <li><strong>集成方式</strong>: 支持通过命令行或API方式调用</li>
                                 </ul>
                             </div>
                         </div>

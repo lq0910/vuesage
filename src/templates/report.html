@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>${title}</title>
+    <style>
+        /* 保持原有样式 */
+    </style>
+    ${customCss}
+</head>
+<body>
+    <div class="header">
+        <h1>VueSage 组件分析报告</h1>
+        <p>生成时间: ${timestamp}</p>
+    </div>
+
+    <div class="overview">
+        <!-- 使用实际数据替换 -->
+        <div class="stat-card">
+            <h3>分析文件总数</h3>
+            <div class="score">${data.summary.totalFiles}</div>
+        </div>
+        <!-- 其他统计卡片 -->
+    </div>
+
+    <div id="components">
+        <!-- 组件分析结果将在这里动态生成 -->
+    </div>
+
+    <footer>
+        <p>本报告由VueSage自动生成</p>
+        <p>生成时间: ${timestamp}</p>
+    </footer>
+</body>
+</html> 

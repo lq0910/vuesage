@@ -39,6 +39,9 @@
     }
   },
   "fix": {
+    "enabled": true,
+    "autoFix": false,
+    "askBeforeFix": true,
     "safe": true,
     "backup": true,
     "ignoreFiles": [
@@ -55,16 +58,27 @@
       "arrowParens": "avoid"
     }
   },
+  "report": {
+    "enabled": true,
+    "askBeforeGenerate": true,
+    "outputDir": "./vuesage-reports",
+    "formats": ["html", "md", "json"],
+    "template": {
+      "html": {
+        "title": "VueSage 组件分析报告",
+        "logo": null,
+        "theme": "light",
+        "customCss": null
+      },
+      "dateFormat": "YYYY-MM-DD HH:mm:ss"
+    },
+    "includeSource": false
+  },
   "watch": {
     "enabled": false,
     "include": ["src/**/*.vue"],
     "exclude": ["node_modules", "dist"],
     "autoFix": false
-  },
-  "report": {
-    "output": "vuesage-report.json",
-    "format": "json",
-    "includeSource": false
   },
   "debug": true,
   "port": 3000,

@@ -1,6 +1,6 @@
 <template>
   <div class="test-component">
-    <div v-for="item in items">
+    <div v-for="(item, index) in items" :key="index">
       {{ item.name }}
     </div>
     <button @click="handleClick">Click me</button>
@@ -9,20 +9,28 @@
 
 <script>
 export default {
+  name: 'TestComponent',
+  props: {
+    initialItems: {
+      type: Array,
+      default: () => []
+    }
+  },
   data() {
     return {
-      items: []
+      items: this.initialItems
     }
   },
   methods: {
     handleClick() {
-      console.log('clicked')
+      this.$emit('click')
+      console.log('Button clicked, emitting event')
     }
   }
 }
 </script>
 
-<style>
+<style scoped>
 .test-component {
   padding: 20px;
 }

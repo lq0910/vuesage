@@ -1,0 +1,27 @@
+{
+  "name": "vuesage-mcp",
+  "version": "1.0.0",
+  "description": "Vue Sage MCP 服务 - Vue 组件智能助手",
+  "type": "module",
+  "main": "index.js",
+  "bin": {
+    "vuesage-mcp": "./index.js"
+  },
+  "files": [
+    "index.js",
+    "service.js"
+  ],
+  "dependencies": {
+    "@vue/compiler-sfc": "^3.0.0",
+    "fastmcp": "^1.0.0"
+  },
+  "author": "liqiang",
+  "license": "MIT",
+  "keywords": [
+    "vue",
+    "mcp",
+    "cursor",
+    "ai",
+    "analysis"
+  ]
+}

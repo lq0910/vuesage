@@ -85,86 +85,89 @@
                 <h1>快速开始</h1>
 
                 <h2>安装</h2>
-                <p>VueSage 提供两种安装方式：</p>
+                <p>VueSage MCP 服务安装：</p>
+
+                <h3>使用 npx（推荐）</h3>
+                <p>无需安装，直接在配置中使用：</p>
+                <pre><code class="language-json">{
+  "mcpServers": {
+    "vuesage": {
+      "command": "npx",
+      "args": [
+        "vuesage-mcp@1.0.9"
+      ],
+      "enabled": true,
+      "env": {}
+    }
+  }
+}</code></pre>
 
                 <h3>全局安装</h3>
-                <p>如果你想在任何项目中使用 VueSage，推荐全局安装：</p>
-                <pre><code class="language-bash">npm install -g vuesage</code></pre>
+                <p>如果你想安装到全局：</p>
+                <pre><code class="language-bash">npm install -g vuesage-mcp@1.1.44</code></pre>
 
-                <h3>项目内安装</h3>
-                <p>如果你只想在特定项目中使用：</p>
-                <pre><code class="language-bash">npm install --save-dev vuesage</code></pre>
-
-                <h2>Cursor 编辑器集成</h2>
-                <p>VueSage 可以与 Cursor 编辑器无缝集成，提供实时代码分析和优化建议。</p>
+                <h2>Cursor 编辑器配置</h2>
 
                 <h3>1. 配置 MCP</h3>
-                <p>在项目根目录创建 <code>mcp.json</code> 文件：</p>
+                <p>在 <code>~/.cursor/mcp.json</code> 文件中添加：</p>
                 <pre><code class="language-json">{
-  "name": "vuesage",
-  "version": "1.1.6",
-  "description": "Vue 组件智能分析与优化引擎",
-  "type": "service",
-  "transport": "stdio",
-  "command": "vuesage",
-  "runtime": "node",
-  "global": true,
-  "platforms": ["cursor", "vscode"]
+  "mcpServers": {
+    "vuesage": {
+      "command": "vuesage-mcp",
+      "version": "1.1.44",
+      "enabled": true,
+      "capabilities": {
+        "tools": [
+          {
+            "name": "analyze",
+            "description": "分析Vue组件代码质量",
+            "parameters": {
+              "type": "object",
+              "properties": {
+                "component": {
+                  "type": "string",
+                  "description": "Vue组件代码"
+                }
+              },
+              "required": ["component"]
+            }
+          }
+        ]
+      }
+    }
+  }
 }</code></pre>
 
-                <h3>2. 使用命令</h3>
-                <p>在 Cursor 编辑器中，你可以使用以下命令：</p>
+                <h3>2. 使用方式</h3>
+                <p>在 Cursor 编辑器中，你可以：</p>
                 <ul>
-                    <li><code>/analyze</code> - 分析当前 Vue 组件</li>
-                    <li><code>/fix</code> - 自动修复检测到的问题</li>
-                    <li><code>/optimize</code> - 优化当前组件</li>
-                    <li><code>/report</code> - 生成代码质量报告</li>
+                    <li>使用命令：<code>/analyze</code> - 分析当前 Vue 组件</li>
+                    <li>或直接输入自然语言指令：如 "分析当前组件" 等</li>
                 </ul>
 
-                <h2>命令行使用</h2>
-                
-                <h3>分析单个文件</h3>
-                <pre><code class="language-bash">vuesage analyze path/to/component.vue</code></pre>
-
-                <h3>批量分析</h3>
-                <pre><code class="language-bash">vuesage analyze "src/**/*.vue"</code></pre>
-
-                <h3>自动修复</h3>
-                <pre><code class="language-bash">vuesage fix path/to/component.vue</code></pre>
-
-                <h3>生成报告</h3>
-                <pre><code class="language-bash">vuesage analyze path/to/component.vue --report --report-format html</code></pre>
-                <p>你可以在 <a href="../reports/example-report.html" class="text-indigo-600 hover:text-indigo-500">这里</a> 查看示例报告。</p>
-
-                <h2>配置文件</h2>
-                <p>在项目根目录创建 <code>.vuesagerc.json</code> 文件来自定义分析规则：</p>
+                <h2>分析结果说明</h2>
+                <p>分析结果包含以下信息：</p>
                 <pre><code class="language-json">{
-  "rules": {
-    "template": {
-      "max-attributes-per-line": 3,
-      "no-unused-vars": "error",
-      "require-v-for-key": "error"
-    },
-    "script": {
-      "max-lines-per-function": 50,
-      "no-unused-vars": "error",
-      "prefer-const": "warn"
-    },
-    "style": {
-      "require-scoped": "error",
-      "no-unused-selectors": "warn"
+  "score": 95,        // 代码质量得分
+  "issues": 0,        // 严重问题数量
+  "warnings": 1,      // 警告数量
+  "details": [        // 详细问题列表
+    {
+      "type": "warning",
+      "message": "具体的问题描述",
+      "line": 16      // 问题所在行号
     }
-  },
-  "ignore": [
-    "node_modules/**",
-    "dist/**"
   ]
 }</code></pre>
+
+                <h2>调试模式</h2>
+                <p>如果需要查看详细日志，可以设置环境变量：</p>
+                <pre><code class="language-bash">export VUESAGE_DEBUG=true</code></pre>
+                <p>日志文件位置：<code>~/.vuesage/logs/vuesage.log</code></p>
 
                 <h2>下一步</h2>
                 <p>了解更多信息：</p>
                 <ul>
-                    <li><a href="./best-practices.html" class="text-indigo-600 hover:text-indigo-500">最佳实践指南</a></li>
                     <li><a href="../API.html" class="text-indigo-600 hover:text-indigo-500">API 文档</a></li>
                     <li><a href="https://github.com/lq0910/vuesage" class="text-indigo-600 hover:text-indigo-500">GitHub 仓库</a></li>
                 </ul>

@@ -44,47 +44,41 @@ npm install vuesage
 
 ### 1. 作为 MCP 服务使用
 
+#### 安装
+
+```bash
+npm install -g vuesage-mcp
+```
+
 #### 配置 MCP
 
-安装 vuesage 后，在编辑器的 MCP 配置文件中添加：
+在编辑器的 MCP 配置文件中添加：
 
 ```json
 {
   "mcpServers": {
     "vuesage": {
-      "command": "node",
-      "args": ["node_modules/vuesage/mcp-adapter.js"],
+      "command": "vuesage-mcp",
       "enabled": true,
       "capabilities": {
-        "analyze": {
-          "description": "分析 Vue 组件代码质量",
-          "input": {
-            "type": "object",
-            "properties": {
-              "component": {
-                "type": "string",
-                "description": "Vue 组件代码"
-              }
-            }
-          }
-        },
-        "fix": {
-          "description": "修复代码问题",
-          "input": {
-            "type": "object",
-            "properties": {
-              "component": {
-                "type": "string",
-                "description": "Vue 组件代码"
+        "tools": [
+          {
+            "name": "analyze",
+            "description": "分析Vue组件代码质量",
+            "parameters": {
+              "type": "object",
+              "properties": {
+                "component": {
+                  "type": "string",
+                  "description": "Vue组件代码"
+                }
               },
-              "issues": {
-                "type": "array",
-                "description": "需要修复的问题列表"
-              }
+              "required": ["component"]
             }
           }
-        }
-      }
+        ]
+      },
+      "version": "1.1.44"
     }
   }
 }
@@ -100,10 +94,27 @@ npm install vuesage
 2. 使用以下方式之一：
    - 命令面板（Command Palette）调用：
      - `VueSage: Analyze Component` - 分析当前组件
-     - `VueSage: Fix Issues` - 修复检测到的问题
    - 对话形式（仅 Cursor）：
      - 直接输入 "分析当前组件" 或类似的自然语言指令
      - AI 助手会调用 vuesage 服务分析代码
+
+#### 返回结果说明
+
+分析结果包含以下信息：
+```json
+{
+  "score": 95,        // 代码质量得分
+  "issues": 0,        // 严重问题数量
+  "warnings": 1,      // 警告数量
+  "details": [        // 详细问题列表
+    {
+      "type": "warning",
+      "message": "具体的问题描述",
+      "line": 16      // 问题所在行号
+    }
+  ]
+}
+```
 
 #### 调试模式
 
@@ -287,73 +298,148 @@ interface FixResult {
 
 ### 2. 规则说明
 
-#### 命名规范 (naming)
-- 组件名称规范
-- Props 命名规范
-- 事件名称规范
-- 变量命名规则
+# VueSage MCP
 
-#### Props 验证 (props)
-- 类型检查
-- 默认值
-- 必填项验证
-- 自定义验证器
+Vue 组件智能分析工具，基于 Model Context Protocol (MCP)。
 
-#### 模板规范 (template)
-- 指令使用规范
-- 性能优化建议
-- 可访问性检查
-- 最佳实践遵循
+## 特性
 
-#### 样式规范 (style)
-- Scoped CSS 检查
-- 选择器复杂度
-- 样式复用建议
-- 主题变量使用
+- 🔍 **智能分析**
+  - Vue 组件代码质量检查
+  - UI/UX 最佳实践验证
+  - 可访问性(A11Y)检查
+  - 响应式设计分析
 
-## 最佳实践指南 💡
+- 🛠 **自动修复**
+  - 一键修复常见代码问题
+  - 自动应用最佳实践
+  - 代码规范自动化
+  - 安全模式下的代码重构
 
-VueSage 的建议基于：
+- 📊 **详细报告**
+  - 组件健康评分
+  - 问题分类统计
+  - 可视化分析结果
+  - 优化建议清单
 
-1. **Vue.js 官方风格指南**
-   - 必要规则
-   - 强烈推荐规则
-   - 推荐规则
+## 快速开始
 
-2. **性能优化最佳实践**
-   - 响应式数据优化
-   - 组件拆分原则
-   - 渲染性能优化
-   - 资源加载优化
+使用 npx 运行（推荐）:
 
-3. **可维护性准则**
-   - 代码组织结构
-   - 组件通信方式
-   - 状态管理方案
-   - 测试友好性
+```bash
+# 分析单个组件
+npx vuesage-mcp@latest analyze <file>
 
-4. **团队协作规范**
-   - 代码一致性
-   - 文档规范
-   - Git 提交规范
-   - 版本控制建议
+# 批量分析
+npx vuesage-mcp@latest analyzeBatch "src/**/*.vue"
 
-## 贡献指南 🤝
+# 自动修复
+npx vuesage-mcp@latest autoFix <file>
+```
 
-1. Fork 本仓库
-2. 创建特性分支：`git checkout -b feature/AmazingFeature`
-3. 提交改动：`git commit -m 'Add some AmazingFeature'`
-4. 推送分支：`git push origin feature/AmazingFeature`
-5. 提交 Pull Request
+## Cursor 编辑器配置
 
-## 许可证 📄
+在 `~/.cursor/mcp.json` 中添加:
 
-MIT License - 详见 [LICENSE](LICENSE) 文件
+```json
+{
+  "mcpServers": {
+    "vuesage": {
+      "command": "npx",
+      "args": ["vuesage-mcp@latest"],
+      "version": "1.1.43"
+    }
+  }
+}
+```
 
-## 作者 👨‍💻
+## 分析规则
 
-lq0910 <liqiang@rmuu.cn>
+### UI 分析
+- ✨ 可访问性 (ARIA属性、alt文本等)
+- 📱 响应式设计
+- 🏗 语义化结构
+- 🎨 样式最佳实践
 
-## 支持 ❤️
+### 代码质量
+- 🔄 v-for 指令规范
+- ⚡️ Props 类型验证
+- 📢 事件声明检查
+- 🎯 样式隔离验证
 
-如果这个项目对您有帮助，请给它一个星标 ⭐️ 
+## 自动修复功能
+
+支持自动修复的问题类型：
+- ARIA 属性补充
+- 响应式样式优化
+- 语义化标签转换
+- Props 类型添加
+- 事件声明补充
+- 样式作用域添加
+
+## API
+
+### analyze
+分析单个 Vue 组件文件：
+```typescript
+interface AnalyzeResult {
+  score: number;          // 总分 (0-100)
+  issues: string[];       // 严重问题
+  warnings: string[];     // 警告
+  fixes: Fix[];          // 可用的修复方案
+  details: {
+    ui: {
+      accessibility: string;
+      responsiveness: string;
+      semantics: string;
+    };
+    code: {
+      props: string;
+      emits: string;
+      style: string;
+    };
+  };
+}
+```
+
+### analyzeBatch
+批量分析多个组件：
+```typescript
+interface BatchResult {
+  summary: {
+    totalFiles: number;
+    averageScore: number;
+    totalIssues: number;
+    totalWarnings: number;
+    passRate: string;
+  };
+  details: AnalyzeResult[];
+}
+```
+
+### autoFix
+自动修复检测到的问题：
+```typescript
+interface Fix {
+  type: string;
+  element?: string;
+  attribute?: string;
+  value?: string;
+  content?: string;
+  from?: string;
+  to?: string;
+}
+```
+
+## 版本历史
+
+### 1.1.43
+- ✨ 新增 UI 分析功能
+- 🔧 添加自动修复能力
+- 📊 增强分析报告
+- 🚀 支持 npx 运行方式
+- 📦 优化依赖管理
+
+## 许可证
+
+MIT

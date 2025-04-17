@@ -108,9 +108,9 @@
             <!-- 头部区域 -->
             <div class="text-center mb-16">
                 <h1 class="text-4xl font-bold text-gray-900 mb-4">VueSage</h1>
-                <p class="text-xl text-gray-600 mb-8">基于 MCP (Model-Code-Prompt) 的 Vue 智能代码分析与优化引擎</p>
+                <p class="text-xl text-gray-600 mb-8">基于 MCP (Model-Code-Prompt) 的 Vue 组件代码质量分析服务</p>
                 <div class="flex justify-center space-x-4">
-                    <a href="#quick-start" class="bg-blue-600 text-white px-6 py-2 rounded-lg hover:bg-blue-700 transition-colors">快速开始</a>
+                    <a href="docs/guide/getting-started.html" class="bg-blue-600 text-white px-6 py-2 rounded-lg hover:bg-blue-700 transition-colors">快速开始</a>
                     <a href="https://github.com/lq0910/vuesage" class="bg-gray-800 text-white px-6 py-2 rounded-lg hover:bg-gray-900 transition-colors">GitHub</a>
                 </div>
             </div>
@@ -121,13 +121,13 @@
                     <div class="lg:text-center">
                         <h2 class="text-base text-indigo-600 font-semibold tracking-wide uppercase">功能特点</h2>
                         <p class="mt-2 text-3xl leading-8 font-extrabold tracking-tight text-gray-900 sm:text-4xl">
-                            智能的 Vue 代码质量分析工具
+                            智能的 Vue 组件代码质量分析服务
                         </p>
                     </div>
 
                     <div class="mt-10">
                         <div class="space-y-10 md:space-y-0 md:grid md:grid-cols-2 md:gap-x-8 md:gap-y-10">
-                            <!-- 代码质量报告 -->
+                            <!-- 代码质量分析 -->
                             <div class="relative">
                                 <div class="absolute flex items-center justify-center h-12 w-12 rounded-md bg-indigo-500 text-white">
                                     <svg class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
@@ -136,33 +136,27 @@
                                 </div>
                                 <div class="ml-16">
                                     <h3 class="text-lg leading-6 font-medium text-gray-900">
-                                        详细的质量报告
+                                        智能代码分析
                                     </h3>
                                     <p class="mt-2 text-base text-gray-500">
-                                        生成全面的代码质量分析报告，包括性能指标、最佳实践建议和改进方案。
-                                        <a href="docs/reports/example-report.html" class="text-indigo-600 hover:text-indigo-500">
-                                            查看示例报告 →
-                                        </a>
+                                        基于 MCP 的智能分析，提供组件代码质量评分和改进建议。
                                     </p>
                                 </div>
                             </div>
 
-                            <!-- 自动修复功能 -->
+                            <!-- Cursor集成 -->
                             <div class="relative">
                                 <div class="absolute flex items-center justify-center h-12 w-12 rounded-md bg-indigo-500 text-white">
                                     <svg class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 20l4-16m4 4l4 4-4 4M6 16l-4-4 4-4" />
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9.75 17L9 20l-1 1h8l-1-1-.75-3M3 13h18M5 17h14a2 2 0 002-2V5a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" />
                                     </svg>
                                 </div>
                                 <div class="ml-16">
                                     <h3 class="text-lg leading-6 font-medium text-gray-900">
-                                        智能代码修复
+                                        Cursor 编辑器集成
                                     </h3>
                                     <p class="mt-2 text-base text-gray-500">
-                                        自动检测并修复常见的代码问题，提供可执行的优化建议。
-                                        <a href="docs/guide/auto-fix.html" class="text-indigo-600 hover:text-indigo-500">
-                                            了解更多 →
-                                        </a>
+                                        与 Cursor 编辑器完美集成，支持命令和自然语言交互。
                                     </p>
                                 </div>
                             </div>
@@ -179,175 +173,25 @@
                                         Vue 3 完整支持
                                     </h3>
                                     <p class="mt-2 text-base text-gray-500">
-                                        全面支持 Vue 3 Composition API，提供针对性的代码优化建议。
-                                        <a href="docs/guide/vue3-support.html" class="text-indigo-600 hover:text-indigo-500">
-                                            查看详情 →
-                                        </a>
+                                        全面支持 Vue 3 组件分析，包括 Composition API 和 Options API。
                                     </p>
                                 </div>
                             </div>
 
-                            <!-- Cursor 集成 -->
+                            <!-- 快速部署 -->
                             <div class="relative">
                                 <div class="absolute flex items-center justify-center h-12 w-12 rounded-md bg-indigo-500 text-white">
                                     <svg class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9.75 17L9 20l-1 1h8l-1-1-.75-3M3 13h18M5 17h14a2 2 0 002-2V5a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" />
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 3v4M3 5h4M6 17v4m-2-2h4m5-16l2.286 6.857L21 12l-5.714 2.143L13 21l-2.286-6.857L5 12l5.714-2.143L13 3z" />
                                     </svg>
                                 </div>
                                 <div class="ml-16">
                                     <h3 class="text-lg leading-6 font-medium text-gray-900">
-                                        Cursor 编辑器集成
+                                        快速部署使用
                                     </h3>
                                     <p class="mt-2 text-base text-gray-500">
-                                        与 Cursor 编辑器无缝集成，提供实时代码分析和优化建议。
-                                        <a href="docs/guide/cursor-integration.html" class="text-indigo-600 hover:text-indigo-500">
-                                            配置指南 →
-                                        </a>
+                                        支持 npx 直接运行，无需安装，配置简单快捷。
                                     </p>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-            <!-- MCP 配置示例 -->
-            <div class="mb-16">
-                <h2 class="text-2xl font-semibold text-gray-900 mb-6">MCP 配置示例</h2>
-                <div class="bg-gray-900 rounded-lg overflow-hidden">
-                    <div class="flex items-center justify-between px-4 py-2 bg-gray-800 border-b border-gray-700">
-                        <span class="text-gray-400">mcp.json</span>
-                        <button class="text-sm text-gray-400 hover:text-white transition-colors px-2 py-1 rounded">复制代码</button>
-                    </div>
-                    <div class="p-6 overflow-x-auto">
-                        <pre class="text-green-400 whitespace-pre"><code>{
-  "name": "vuesage",
-  "version": "1.1.6",
-  "description": "Vue 组件智能分析与优化引擎",
-  "type": "service",
-  "transport": "stdio",
-  "command": "vuesage",
-  "runtime": "node",
-  "global": true,
-  "platforms": ["cursor", "vscode"],
-  "capabilities": {
-    "analyze": {
-      "description": "分析 Vue 组件代码质量",
-      "input": {
-        "type": "object",
-        "properties": {
-          "component": {
-            "type": "string",
-            "description": "Vue 组件代码"
-          }
-        }
-      }
-    }
-  }
-}</code></pre>
-                    </div>
-                </div>
-            </div>
-
-            <!-- AI 对话示例 -->
-            <div class="mb-16">
-                <h2 class="text-2xl font-semibold text-gray-900 mb-6">AI 对话式代码优化</h2>
-                <div class="chat-container rounded-xl p-6 max-w-4xl mx-auto">
-                    <div class="space-y-6">
-                        <div class="flex justify-start">
-                            <div class="chat-message chat-user text-white p-4 rounded-2xl rounded-tl-none">
-                                <p>检查这个组件的性能问题</p>
-                            </div>
-                        </div>
-                        <div class="flex justify-end">
-                            <div class="chat-message chat-ai p-4 rounded-2xl rounded-tr-none">
-                                <div class="flex items-start space-x-3">
-                                    <div class="flex-shrink-0">
-                                        <span class="text-2xl">🧙‍♂️</span>
-                                    </div>
-                                    <div class="flex-grow">
-                                        <p class="text-gray-800 font-medium mb-2">我发现了以下性能优化机会：</p>
-                                        <ul class="space-y-2 text-gray-600 mb-4">
-                                            <li class="flex items-start">
-                                                <span class="text-red-500 mr-2">•</span>
-                                                计算属性中存在复杂的数组操作，建议使用缓存
-                                            </li>
-                                            <li class="flex items-start">
-                                                <span class="text-yellow-500 mr-2">•</span>
-                                                检测到 6 个 watch 监听器，可能影响性能
-                                            </li>
-                                            <li class="flex items-start">
-                                                <span class="text-blue-500 mr-2">•</span>
-                                                v-if 和 v-show 混用过多，建议统一使用方式
-                                            </li>
-                                        </ul>
-                                        <p class="text-gray-800">需要我帮你修复这些问题吗？</p>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="flex justify-start">
-                            <div class="chat-message chat-user text-white p-4 rounded-2xl rounded-tl-none">
-                                <p>是的，请帮我优化</p>
-                            </div>
-                        </div>
-                        <div class="flex justify-end">
-                            <div class="chat-message chat-ai p-4 rounded-2xl rounded-tr-none">
-                                <div class="flex items-start space-x-3">
-                                    <div class="flex-shrink-0">
-                                        <span class="text-2xl">🧙‍♂️</span>
-                                    </div>
-                                    <div class="flex-grow">
-                                        <p class="text-gray-800 font-medium mb-4">好的，我来帮你优化代码：</p>
-                                        <div class="code-block mb-4">
-                                            <div class="code-header">
-                                                <span>优化示例</span>
-                                                <button class="text-sm hover:text-white transition-colors">复制代码</button>
-                                            </div>
-                                            <pre class="text-green-400"><code>// 优化前
-computed: {
-  filteredItems() {
-    return this.items
-      .filter(item => item.active)
-      .map(item => item.value)
-      .reduce((acc, val) => acc + val, 0)
-  }
-}
-
-// 优化后
-computed: {
-  activeItems() {
-    return this.items.filter(item => item.active)
-  },
-  filteredItems() {
-    return this.activeItems
-      .map(item => item.value)
-      .reduce((acc, val) => acc + val, 0)
-  }
-}</code></pre>
-                                        </div>
-                                        <p class="text-gray-800 font-medium mb-2">我已经完成以下优化：</p>
-                                        <ul class="space-y-2">
-                                            <li class="flex items-center text-green-600">
-                                                <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/>
-                                                </svg>
-                                                拆分计算属性，避免重复计算
-                                            </li>
-                                            <li class="flex items-center text-green-600">
-                                                <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/>
-                                                </svg>
-                                                合并了重复的 watch 监听器
-                                            </li>
-                                            <li class="flex items-center text-green-600">
-                                                <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/>
-                                                </svg>
-                                                统一使用 v-show 优化条件渲染
-                                            </li>
-                                        </ul>
-                                    </div>
                                 </div>
                             </div>
                         </div>
@@ -356,26 +200,215 @@ computed: {
             </div>
 
             <!-- 快速开始 -->
-            <div id="quick-start" class="mb-16">
-                <h2 class="text-2xl font-semibold text-gray-900 mb-6">快速开始</h2>
-                <div class="bg-white rounded-lg shadow-md p-6">
-                    <div class="space-y-6">
-                        <div>
-                            <h3 class="text-lg font-medium text-gray-900 mb-2">1. 安装</h3>
-                            <pre class="bg-gray-800 p-4 rounded text-green-400"><code>npm install -g vuesage</code></pre>
+            <div id="quick-start" class="py-12">
+                <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+                    <h2 class="text-3xl font-extrabold text-gray-900 text-center mb-8">快速开始</h2>
+                    
+                    <div class="space-y-8">
+                        <!-- MCP 配置卡片 -->
+                        <div class="bg-white shadow-lg rounded-lg overflow-hidden">
+                            <div class="p-6">
+                                <div class="flex items-center mb-4">
+                                    <div class="flex-shrink-0">
+                                        <svg class="h-6 w-6 text-indigo-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z" />
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
+                                        </svg>
+                                    </div>
+                                    <h3 class="ml-3 text-lg font-medium text-gray-900">1. MCP 配置</h3>
+                                </div>
+                                <div class="bg-gray-50 rounded-lg p-4 mb-4">
+                                    <pre class="text-sm text-gray-800"><code>{
+  "mcpServers": {
+    "vuesage": {
+      "command": "npx",
+      "args": [
+        "vuesage-mcp@1.1.44"
+      ],
+      "enabled": true,
+      "env": {}
+    }
+  }
+}</code></pre>
+                                </div>
+
+                                <div class="flex items-center mb-4">
+                                    <div class="flex-shrink-0">
+                                        <svg class="h-6 w-6 text-indigo-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z" />
+                                        </svg>
+                                    </div>
+                                    <h3 class="ml-3 text-lg font-medium text-gray-900">2. 使用方式</h3>
+                                </div>
+                                <ul class="list-disc pl-5 text-gray-600 mb-4">
+                                    <li class="mb-2">使用命令：<code class="bg-gray-100 px-2 py-1 rounded">/analyze</code></li>
+                                    <li class="mb-2">或直接输入：<code class="bg-gray-100 px-2 py-1 rounded">"分析当前组件"</code></li>
+                                </ul>
+
+                                <div class="mt-6">
+                                    <a href="docs/guide/getting-started.html" class="inline-flex items-center text-indigo-600 hover:text-indigo-500">
+                                        查看详细文档
+                                        <svg class="ml-2 w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" />
+                                        </svg>
+                                    </a>
+                                </div>
+                            </div>
                         </div>
-                        <div>
-                            <h3 class="text-lg font-medium text-gray-900 mb-2">2. 在 Cursor 中配置</h3>
-                            <pre class="bg-gray-800 p-4 rounded text-green-400"><code>cursor extension install vuesage</code></pre>
-                        </div>
-                        <div>
-                            <h3 class="text-lg font-medium text-gray-900 mb-2">3. 开始使用</h3>
-                            <p class="text-gray-600 mb-2">在 Cursor 中打开 Vue 文件，使用以下命令：</p>
-                            <ul class="space-y-2 text-gray-600">
-                                <li>• /analyze - 分析当前文件</li>
-                                <li>• /fix - 修复检测到的问题</li>
-                                <li>• /chat - 开始 AI 对话</li>
-                            </ul>
+
+                        <!-- AI 对话演示 -->
+                        <div class="bg-white shadow-lg rounded-lg overflow-hidden">
+                            <div class="p-6">
+                                <div class="flex items-center mb-4">
+                                    <div class="flex-shrink-0">
+                                        <span class="text-2xl">🤖</span>
+                                    </div>
+                                    <h3 class="ml-3 text-lg font-medium text-gray-900">AI 对话演示</h3>
+                                </div>
+                                
+                                <div class="chat-container rounded-xl p-4 space-y-4">
+                                    <!-- 用户消息 -->
+                                    <div class="flex justify-start">
+                                        <div class="chat-message chat-user text-white p-3 rounded-2xl rounded-tl-none">
+                                            分析这个组件的代码质量
+                                        </div>
+                                    </div>
+
+                                    <!-- AI 回复 - 分析阶段 -->
+                                    <div class="flex justify-end">
+                                        <div class="chat-message chat-ai p-4 rounded-2xl rounded-tr-none">
+                                            <div class="flex items-start space-x-3">
+                                                <div class="flex-shrink-0">
+                                                    <span class="text-2xl">🧙‍♂️</span>
+                                                </div>
+                                                <div class="flex-grow">
+                                                    <p class="text-gray-800 mb-2">正在分析组件...</p>
+                                                    <div class="space-y-2">
+                                                        <div class="flex items-center text-gray-600">
+                                                            <svg class="w-4 h-4 mr-2 text-green-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/>
+                                                            </svg>
+                                                            检查代码结构
+                                                        </div>
+                                                        <div class="flex items-center text-gray-600">
+                                                            <svg class="w-4 h-4 mr-2 text-green-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/>
+                                                            </svg>
+                                                            分析组件性能
+                                                        </div>
+                                                        <div class="flex items-center text-gray-600">
+                                                            <svg class="w-4 h-4 mr-2 text-green-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/>
+                                                            </svg>
+                                                            评估最佳实践
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <!-- AI 回复 - 分析结果 -->
+                                    <div class="flex justify-end">
+                                        <div class="chat-message chat-ai p-4 rounded-2xl rounded-tr-none">
+                                            <div class="flex items-start space-x-3">
+                                                <div class="flex-shrink-0">
+                                                    <span class="text-2xl">🧙‍♂️</span>
+                                                </div>
+                                                <div class="flex-grow">
+                                                    <p class="text-gray-800 font-medium mb-2">分析完成！发现以下问题：</p>
+                                                    <ul class="space-y-2 text-gray-600 mb-4">
+                                                        <li class="flex items-start">
+                                                            <span class="text-red-500 mr-2">•</span>
+                                                            v-for 指令缺少 key 属性
+                                                        </li>
+                                                        <li class="flex items-start">
+                                                            <span class="text-yellow-500 mr-2">•</span>
+                                                            组件未定义 name 属性
+                                                        </li>
+                                                        <li class="flex items-start">
+                                                            <span class="text-blue-500 mr-2">•</span>
+                                                            建议使用 scoped style
+                                                        </li>
+                                                    </ul>
+                                                    <p class="text-gray-800">需要我帮你自动修复这些问题吗？</p>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <!-- 用户消息 -->
+                                    <div class="flex justify-start">
+                                        <div class="chat-message chat-user text-white p-3 rounded-2xl rounded-tl-none">
+                                            是的,请帮我修复
+                                        </div>
+                                    </div>
+
+                                    <!-- AI 回复 - 修复过程 -->
+                                    <div class="flex justify-end">
+                                        <div class="chat-message chat-ai p-4 rounded-2xl rounded-tr-none">
+                                            <div class="flex items-start space-x-3">
+                                                <div class="flex-shrink-0">
+                                                    <span class="text-2xl">🧙‍♂️</span>
+                                                </div>
+                                                <div class="flex-grow">
+                                                    <p class="text-gray-800 mb-2">正在应用修复...</p>
+                                                    <div class="space-y-2 mb-4">
+                                                        <div class="flex items-center text-gray-600">
+                                                            <svg class="w-4 h-4 mr-2 text-green-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/>
+                                                            </svg>
+                                                            添加 v-for key
+                                                        </div>
+                                                        <div class="flex items-center text-gray-600">
+                                                            <svg class="w-4 h-4 mr-2 text-green-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/>
+                                                            </svg>
+                                                            添加组件 name
+                                                        </div>
+                                                        <div class="flex items-center text-gray-600">
+                                                            <svg class="w-4 h-4 mr-2 text-green-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/>
+                                                            </svg>
+                                                            添加 scoped 样式
+                                                        </div>
+                                                    </div>
+                                                    <p class="text-gray-800">是否需要生成分析报告？</p>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <!-- 用户消息 -->
+                                    <div class="flex justify-start">
+                                        <div class="chat-message chat-user text-white p-3 rounded-2xl rounded-tl-none">
+                                            好的,请生成报告
+                                        </div>
+                                    </div>
+
+                                    <!-- AI 回复 - 报告生成 -->
+                                    <div class="flex justify-end">
+                                        <div class="chat-message chat-ai p-4 rounded-2xl rounded-tr-none">
+                                            <div class="flex items-start space-x-3">
+                                                <div class="flex-shrink-0">
+                                                    <span class="text-2xl">🧙‍♂️</span>
+                                                </div>
+                                                <div class="flex-grow">
+                                                    <p class="text-gray-800 mb-2">报告已生成！</p>
+                                                    <div class="bg-gray-50 rounded-lg p-3">
+                                                        <p class="text-sm text-gray-600">已在 ./vuesage-reports 目录生成以下报告：</p>
+                                                        <ul class="text-sm text-gray-600 mt-2">
+                                                            <li>• HTML 报告</li>
+                                                            <li>• Markdown 报告</li>
+                                                            <li>• JSON 报告</li>
+                                                        </ul>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
                         </div>
                     </div>
                 </div>
