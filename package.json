@@ -1,6 +1,6 @@
 {
   "name": "vuesage-mcp",
-  "version": "1.1.44",
+  "version": "1.1.45",
   "description": "Vue component analysis tool with batch processing and reporting capabilities",
   "type": "module",
   "main": "service.js",
