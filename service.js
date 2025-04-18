@@ -6,6 +6,7 @@ import { parse } from "@vue/compiler-sfc";
 import { z } from "zod";
 import fs from 'fs/promises';
 import path from 'path';
+import { fileURLToPath } from 'url';
 
 // 启用调试输出
 process.env.DEBUG = 'fastmcp:*';
@@ -276,29 +277,34 @@ async function autoFix(code, fixes) {
 
 // 生成报告
 async function generateReport(results, format = 'html') {
-  const templatePath = path.join(process.cwd(), 'templates', `report.${format}`);
+  const __dirname = path.dirname(fileURLToPath(import.meta.url));
+  const templatePath = path.join(__dirname, 'templates', `report.${format}`);
   let template;
-  
+
   try {
     template = await fs.readFile(templatePath, 'utf-8');
   } catch (error) {
-    throw new Error(`无法读取报告模板: ${error.message}`);
+    const rootTemplatePath = path.join(process.cwd(), 'templates', `report.${format}`);
+    try {
+      template = await fs.readFile(rootTemplatePath, 'utf-8');
+    } catch (err) {
+      throw new Error(`无法读取报告模板: ${error.message}，也无法从 ${rootTemplatePath} 读取`);
+    }
   }
 
   const total = results.length;
-  const avgScore = results.reduce((sum, r) => sum + r.score, 0) / total;
-  const totalIssues = results.reduce((sum, r) => sum + r.issues.length, 0);
-  const totalWarnings = results.reduce((sum, r) => sum + r.warnings.length, 0);
+  const avgScore = total > 0 ? results.reduce((sum, r) => sum + r.score, 0) / total : 0;
+  const totalIssues = results.reduce((sum, r) => sum + (r.issues?.length || 0), 0);
+  const totalWarnings = results.reduce((sum, r) => sum + (r.warnings?.length || 0), 0);
 
   const summary = {
     totalFiles: total,
     averageScore: Math.round(avgScore),
     totalIssues,
     totalWarnings,
-    passRate: `${Math.round((results.filter(r => r.score >= 80).length / total) * 100)}%`
+    passRate: total > 0 ? `${Math.round((results.filter(r => r.score >= 80).length / total) * 100)}%` : 'N/A'
   };
 
-  // 替换模板变量
   let report = template
     .replace('{{totalFiles}}', summary.totalFiles)
     .replace('{{averageScore}}', summary.averageScore)
@@ -307,13 +313,46 @@ async function generateReport(results, format = 'html') {
     .replace('{{passRate}}', summary.passRate)
     .replace('{{details}}', JSON.stringify(results, null, 2));
 
-  return report;
+  // 使用相对路径，确保输出目录基于当前工作目录
+  const currentWorkingDir = process.cwd();
+  console.error(`当前工作目录: ${currentWorkingDir}`); // 调试信息
+  
+  let outputDir = path.resolve(currentWorkingDir, 'vuesage-reports');
+  console.error(`计划创建输出目录: ${outputDir}`); // 调试信息
+  
+  const timestamp = new Date().toISOString().replace(/[:.]/g, '-');
+  let outputPath = path.join(outputDir, `report-${timestamp}.${format}`);
+  
+  try {
+    try {
+      await fs.mkdir(outputDir, { recursive: true });
+    } catch (mkdirError) {
+      // 如果无法创建首选目录，回退到操作系统临时目录
+      console.error(`无法创建目录 ${outputDir}: ${mkdirError.message}`);
+      console.error('尝试使用临时目录...');
+      
+      const os = await import('os');
+      outputDir = path.join(os.tmpdir(), 'vuesage-reports');
+      outputPath = path.join(outputDir, `report-${timestamp}.${format}`);
+      
+      console.error(`新的输出目录: ${outputDir}`);
+      await fs.mkdir(outputDir, { recursive: true });
+    }
+    
+    console.error(`输出文件路径: ${outputPath}`);
+    await fs.writeFile(outputPath, report);
+    console.error(`报告已成功写入: ${outputPath}`);
+    return { success: true, outputPath };
+  } catch (error) {
+    console.error(`写入报告文件时出错: ${error.stack}`);
+    throw new Error(`无法写入报告文件: ${error.message}`);
+  }
 }
 
 // 创建 MCP 服务器
 const server = new McpServer({
   name: "vuesage",
-  version: "1.1.44",
+  version: "1.2.3",
   vendor: "VueSage"
 });
 
@@ -423,30 +462,27 @@ server.tool(
   },
   async ({ results, format }) => {
     try {
-      const report = await generateReport(results, format);
-      const outputDir = path.join(process.cwd(), 'vuesage-reports');
-      const timestamp = new Date().toISOString().replace(/[:.]/g, '-');
-      const outputPath = path.join(outputDir, `report-${timestamp}.${format}`);
+      // Call the refactored function
+      const reportResult = await generateReport(results, format);
 
-      await fs.mkdir(outputDir, { recursive: true });
-      await fs.writeFile(outputPath, report);
-
+      // No need to check reportResult.success as generateReport throws on error now
       return {
         content: [{
           type: "text",
           text: JSON.stringify({
             success: true,
-            message: `报告已生成：${outputPath}`
+            message: `报告已生成：${reportResult.outputPath}` // Use the returned path
           }, null, 2)
         }]
       };
     } catch (error) {
+      console.error(`generateReport tool handler 捕获错误: ${error.stack}`); // Log error in handler
       return {
         content: [{
           type: "text",
           text: JSON.stringify({
             success: false,
-            message: `生成报告失败：${error.message}`
+            message: `生成报告失败：${error.message}` // Report the error from generateReport or handler
           }, null, 2)
         }]
       };

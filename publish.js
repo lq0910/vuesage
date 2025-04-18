@@ -26,14 +26,29 @@ const copyFile = (src, dest) => {
 
 // 复制必要的文件
 copyFile(
-  path.join(__dirname, 'mcp-service.js'),
-  path.join(distDir, 'mcp-service.js')
+  path.join(__dirname, 'service.js'),
+  path.join(distDir, 'service.js')
 );
+
+// 确保 bin 目录存在
+ensureDir(path.join(distDir, 'bin'));
 
 copyFile(
   path.join(__dirname, 'bin', 'vuesage-mcp.js'),
   path.join(distDir, 'bin', 'vuesage-mcp.js')
 );
+
+// 确保 templates 目录存在并复制模板文件
+const templatesDir = path.join(distDir, 'templates');
+ensureDir(templatesDir);
+
+// 复制模板文件
+['html', 'md'].forEach(format => {
+  copyFile(
+    path.join(__dirname, 'templates', `report.${format}`),
+    path.join(templatesDir, `report.${format}`)
+  );
+});
 
 // 运行 npm publish
 console.log('Running npm publish...');

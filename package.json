@@ -1,23 +1,29 @@
 {
   "name": "vuesage-mcp",
-  "version": "1.1.45",
-  "description": "Vue component analysis tool with batch processing and reporting capabilities",
+  "version": "1.2.3",
+  "description": "Vue Sage MCP Service - Vue 组件分析和优化工具",
   "type": "module",
   "main": "service.js",
   "bin": {
-    "vuesage-mcp": "./service.js"
+    "vuesage-mcp": "./bin/vuesage-mcp.js"
   },
   "files": [
+    "dist",
+    "bin",
     "service.js",
     "templates/",
     "README.md",
     "LICENSE"
   ],
+  "scripts": {
+    "publish": "node publish.js"
+  },
   "dependencies": {
-    "@modelcontextprotocol/sdk": "^1.9.0",
-    "@vue/compiler-sfc": "^3.4.0",
-    "zod": "^3.22.4",
-    "commander": "^11.1.0"
+    "@modelcontextprotocol/sdk": "^1.0.0",
+    "@vue/compiler-sfc": "^3.3.0",
+    "commander": "^11.1.0",
+    "vuesage-mcp": "^1.2.2",
+    "zod": "^3.22.0"
   },
   "publishConfig": {
     "access": "public"
