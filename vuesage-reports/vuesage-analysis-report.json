@@ -1,0 +1,129 @@
+{
+  "reportInfo": {
+    "title": "VueSage 组件分析报告",
+    "generatedAt": "2024-03-27",
+    "version": "1.0.0"
+  },
+  "summary": {
+    "totalFiles": 4,
+    "averageScore": 88,
+    "totalIssues": 0,
+    "totalWarnings": 10,
+    "passRate": "100%"
+  },
+  "fileAnalysis": [
+    {
+      "filename": "test/TestComponent.vue",
+      "score": 90,
+      "strengths": [
+        "可访问性良好",
+        "语义结构清晰",
+        "Props和Emits使用规范"
+      ],
+      "improvements": [
+        "添加响应式设计",
+        "使用scoped样式隔离"
+      ],
+      "details": {
+        "ui": {
+          "accessibility": true,
+          "responsiveness": false,
+          "semantics": true
+        },
+        "code": {
+          "props": true,
+          "emits": true,
+          "style": false
+        }
+      }
+    },
+    {
+      "filename": "test/test.vue",
+      "score": 90,
+      "strengths": [
+        "基础结构完整",
+        "代码简洁清晰"
+      ],
+      "improvements": [
+        "添加响应式设计",
+        "使用scoped样式隔离"
+      ],
+      "details": {
+        "ui": {
+          "accessibility": true,
+          "responsiveness": false,
+          "semantics": true
+        },
+        "code": {
+          "props": true,
+          "emits": true,
+          "style": false
+        }
+      }
+    },
+    {
+      "filename": "test/TestButton.vue",
+      "score": 85,
+      "strengths": [
+        "Props定义规范",
+        "事件处理完善"
+      ],
+      "improvements": [
+        "添加aria-label属性提高可访问性",
+        "添加响应式设计",
+        "使用scoped样式隔离"
+      ],
+      "details": {
+        "ui": {
+          "accessibility": false,
+          "responsiveness": false,
+          "semantics": true
+        },
+        "code": {
+          "props": true,
+          "emits": true,
+          "style": false
+        }
+      }
+    },
+    {
+      "filename": "test/example.vue",
+      "score": 85,
+      "strengths": [
+        "基础功能完整",
+        "代码结构清晰"
+      ],
+      "improvements": [
+        "按钮需要添加aria-label",
+        "添加响应式设计",
+        "使用scoped样式隔离"
+      ],
+      "details": {
+        "ui": {
+          "accessibility": false,
+          "responsiveness": false,
+          "semantics": true
+        },
+        "code": {
+          "props": true,
+          "emits": true,
+          "style": false
+        }
+      }
+    }
+  ],
+  "recommendations": {
+    "accessibility": [
+      "为按钮组件添加aria-label属性",
+      "确保所有交互元素都有适当的可访问性标签"
+    ],
+    "styling": [
+      "所有组件都建议使用scoped样式",
+      "添加响应式设计支持"
+    ],
+    "codeStandards": [
+      "整体代码规范良好",
+      "建议统一样式命名规范"
+    ]
+  }
+} 

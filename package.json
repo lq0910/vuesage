@@ -9,6 +9,7 @@
   },
   "files": [
     "service.js",
+    "templates/",
     "README.md",
     "LICENSE"
   ],

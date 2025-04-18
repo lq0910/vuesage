@@ -9,76 +9,36 @@
   "global": true,
   "platforms": ["cursor", "vscode"],
   "capabilities": {
-    "analyze": {
+    "vuesage.analyze": {
       "description": "分析Vue组件代码质量",
       "input": {
         "type": "object",
         "properties": {
-          "component": {
+          "code": {
             "type": "string",
             "description": "Vue组件代码"
           },
-          "platform": {
+          "filename": {
             "type": "string",
-            "enum": ["cursor", "vscode"],
-            "description": "运行平台"
+            "description": "文件名"
           }
         },
-        "required": ["component"]
+        "required": ["code", "filename"]
       },
       "output": {
         "type": "object",
         "properties": {
-          "summary": {
-            "type": "object",
-            "properties": {
-              "totalIssues": {
-                "type": "number",
-                "description": "发现的问题总数"
-              },
-              "categories": {
-                "type": "number",
-                "description": "问题类别数量"
-              },
-              "hasAutoFixableIssues": {
-                "type": "boolean",
-                "description": "是否有可自动修复的问题"
-              }
-            }
-          },
-          "issues": {
+          "content": {
             "type": "array",
             "items": {
               "type": "object",
               "properties": {
-                "category": {
+                "type": {
                   "type": "string",
-                  "description": "问题类别"
+                  "enum": ["text"]
                 },
-                "issues": {
-                  "type": "array",
-                  "items": {
-                    "type": "object",
-                    "properties": {
-                      "type": {
-                        "type": "string",
-                        "description": "问题类型"
-                      },
-                      "severity": {
-                        "type": "string",
-                        "enum": ["error", "warning"],
-                        "description": "问题严重程度"
-                      },
-                      "message": {
-                        "type": "string",
-                        "description": "问题描述"
-                      },
-                      "autofix": {
-                        "type": "object",
-                        "description": "自动修复信息"
-                      }
-                    }
-                  }
+                "text": {
+                  "type": "string"
                 }
               }
             }
@@ -86,41 +46,36 @@
         }
       }
     },
-    "fix": {
+    "vuesage.autoFix": {
       "description": "自动修复Vue组件中的问题",
       "input": {
         "type": "object",
         "properties": {
-          "component": {
+          "code": {
             "type": "string",
             "description": "Vue组件代码"
           },
-          "issues": {
+          "fixes": {
             "type": "array",
             "description": "需要修复的问题列表"
           }
         },
-        "required": ["component", "issues"]
+        "required": ["code", "fixes"]
       },
       "output": {
         "type": "object",
         "properties": {
-          "fixedComponent": {
-            "type": "string",
-            "description": "修复后的组件代码"
-          },
-          "appliedFixes": {
+          "content": {
             "type": "array",
             "items": {
               "type": "object",
               "properties": {
                 "type": {
                   "type": "string",
-                  "description": "修复类型"
+                  "enum": ["text"]
                 },
-                "message": {
-                  "type": "string",
-                  "description": "修复说明"
+                "text": {
+                  "type": "string"
                 }
               }
             }

@@ -4,6 +4,8 @@ import { McpServer } from "@modelcontextprotocol/sdk/server/mcp.js";
 import { StdioServerTransport } from "@modelcontextprotocol/sdk/server/stdio.js";
 import { parse } from "@vue/compiler-sfc";
 import { z } from "zod";
+import fs from 'fs/promises';
+import path from 'path';
 
 // 启用调试输出
 process.env.DEBUG = 'fastmcp:*';
@@ -272,52 +274,46 @@ async function autoFix(code, fixes) {
   return fixedCode;
 }
 
-// 批量分析函数
-async function analyzeBatch(files) {
-  const results = [];
-  for (const file of files) {
-    try {
-      const result = await analyze(file.code, file.filename);
-      results.push({
-        filename: file.filename,
-        ...result
-      });
-    } catch (error) {
-      results.push({
-        filename: file.filename,
-        score: 0,
-        issues: [error.message],
-        warnings: [],
-        fixes: []
-      });
-    }
-  }
-  return generateReport(results);
-}
-
 // 生成报告
-function generateReport(results) {
+async function generateReport(results, format = 'html') {
+  const templatePath = path.join(process.cwd(), 'templates', `report.${format}`);
+  let template;
+  
+  try {
+    template = await fs.readFile(templatePath, 'utf-8');
+  } catch (error) {
+    throw new Error(`无法读取报告模板: ${error.message}`);
+  }
+
   const total = results.length;
   const avgScore = results.reduce((sum, r) => sum + r.score, 0) / total;
   const totalIssues = results.reduce((sum, r) => sum + r.issues.length, 0);
   const totalWarnings = results.reduce((sum, r) => sum + r.warnings.length, 0);
 
-  return {
-    summary: {
-      totalFiles: total,
-      averageScore: Math.round(avgScore),
-      totalIssues,
-      totalWarnings,
-      passRate: `${Math.round((results.filter(r => r.score >= 80).length / total) * 100)}%`
-    },
-    details: results
+  const summary = {
+    totalFiles: total,
+    averageScore: Math.round(avgScore),
+    totalIssues,
+    totalWarnings,
+    passRate: `${Math.round((results.filter(r => r.score >= 80).length / total) * 100)}%`
   };
+
+  // 替换模板变量
+  let report = template
+    .replace('{{totalFiles}}', summary.totalFiles)
+    .replace('{{averageScore}}', summary.averageScore)
+    .replace('{{totalIssues}}', summary.totalIssues)
+    .replace('{{totalWarnings}}', summary.totalWarnings)
+    .replace('{{passRate}}', summary.passRate)
+    .replace('{{details}}', JSON.stringify(results, null, 2));
+
+  return report;
 }
 
 // 创建 MCP 服务器
 const server = new McpServer({
   name: "vuesage",
-  version: "1.1.43",
+  version: "1.1.44",
   vendor: "VueSage"
 });
 
@@ -330,6 +326,21 @@ server.tool(
   },
   async ({ code, filename }) => {
     const result = await analyze(code, filename);
+    
+    // 如果有问题，返回分析结果和修复建议
+    if (result.issues.length > 0 || result.warnings.length > 0) {
+      return {
+        content: [{
+          type: "text",
+          text: JSON.stringify({
+            ...result,
+            needsFix: true,
+            message: "发现问题，是否需要自动修复？(Y/N)"
+          }, null, 2)
+        }]
+      };
+    }
+    
     return {
       content: [{
         type: "text",
@@ -349,11 +360,26 @@ server.tool(
     }))
   },
   async ({ files }) => {
-    const result = await analyzeBatch(files);
+    const results = [];
+    for (const file of files) {
+      const result = await analyze(file.code, file.filename);
+      results.push({
+        filename: file.filename,
+        ...result
+      });
+    }
+
+    // 如果有问题，询问是否需要生成报告
+    const hasIssues = results.some(r => r.issues.length > 0 || r.warnings.length > 0);
+    
     return {
       content: [{
         type: "text",
-        text: JSON.stringify(result, null, 2)
+        text: JSON.stringify({
+          results,
+          needsReport: hasIssues,
+          message: hasIssues ? "是否需要生成分析报告？(Y/N)" : "分析完成，未发现问题。"
+        }, null, 2)
       }]
     };
   }
@@ -379,9 +405,52 @@ server.tool(
     return {
       content: [{
         type: "text",
-        text: fixedCode
+        text: JSON.stringify({
+          fixedCode,
+          message: "修复完成，是否需要生成报告？(Y/N)"
+        }, null, 2)
       }]
     };
+  }
+);
+
+// 报告生成工具
+server.tool(
+  "generateReport",
+  {
+    results: z.array(z.any()),
+    format: z.enum(['html', 'md'])
+  },
+  async ({ results, format }) => {
+    try {
+      const report = await generateReport(results, format);
+      const outputDir = path.join(process.cwd(), 'vuesage-reports');
+      const timestamp = new Date().toISOString().replace(/[:.]/g, '-');
+      const outputPath = path.join(outputDir, `report-${timestamp}.${format}`);
+
+      await fs.mkdir(outputDir, { recursive: true });
+      await fs.writeFile(outputPath, report);
+
+      return {
+        content: [{
+          type: "text",
+          text: JSON.stringify({
+            success: true,
+            message: `报告已生成：${outputPath}`
+          }, null, 2)
+        }]
+      };
+    } catch (error) {
+      return {
+        content: [{
+          type: "text",
+          text: JSON.stringify({
+            success: false,
+            message: `生成报告失败：${error.message}`
+          }, null, 2)
+        }]
+      };
+    }
   }
 );
 

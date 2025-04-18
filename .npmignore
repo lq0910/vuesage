@@ -1,0 +1,14 @@
+.git/
+.gitignore
+.DS_Store
+node_modules/
+legacy/
+src/
+test/
+tests/
+docs/
+dist/
+public/
+vuesage-reports/
+*.log
+.vuesagerc.json

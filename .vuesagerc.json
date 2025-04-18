@@ -30,12 +30,40 @@
     "accessibility": {
       "enforceAria": true,
       "checkContrast": true,
-      "requireFocusable": true
+      "requireFocusable": true,
+      "level": "warning",
+      "rules": [
+        "aria-label",
+        "alt-text"
+      ]
     },
     "bestPractices": {
       "enforceVuex": true,
       "checkPropsMutations": true,
       "enforceTypeScript": false
+    },
+    "responsiveness": {
+      "level": "warning",
+      "rules": [
+        "media-queries",
+        "flexible-units"
+      ]
+    },
+    "semantics": {
+      "level": "warning",
+      "rules": [
+        "semantic-tags",
+        "meaningful-content"
+      ]
+    },
+    "code": {
+      "level": "error",
+      "rules": [
+        "v-for-key",
+        "props-validation",
+        "emits-declaration",
+        "style-scoping"
+      ]
     }
   },
   "fix": {
@@ -62,13 +90,17 @@
     "enabled": true,
     "askBeforeGenerate": true,
     "outputDir": "./vuesage-reports",
-    "formats": ["html", "md", "json"],
+    "formats": ["html", "md"],
     "template": {
       "html": {
         "title": "VueSage 组件分析报告",
         "logo": null,
         "theme": "light",
         "customCss": null
+      },
+      "md": {
+        "title": "VueSage 组件分析报告",
+        "template": "./templates/report.md"
       },
       "dateFormat": "YYYY-MM-DD HH:mm:ss"
     },
@@ -88,5 +120,20 @@
   "mcp": {
     "enabled": true,
     "adapter": "./mcp-adapter.js"
+  },
+  "templates": {
+    "html": "templates/report.html",
+    "markdown": "templates/report.md"
+  },
+  "output": {
+    "directory": "vuesage-reports",
+    "formats": ["html", "md"]
+  },
+  "scoring": {
+    "baseScore": 100,
+    "deductions": {
+      "error": 10,
+      "warning": 5
+    }
   }
 } 
